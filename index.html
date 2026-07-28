@@ -227,9 +227,9 @@
     .tea-cup { position:absolute; bottom:19px; left:50%; width:92px; height:112px; overflow:hidden; border:4px solid #c95873; border-top:0; border-radius:12px 12px 28px 28px; background:#fffdfd; transform:translateX(-50%); transform-origin:50% 100%; transition:transform .08s ease; }
     .tea-cup::before { content:""; position:absolute; top:-16px; left:27px; width:30px; height:18px; border:4px solid #c95873; border-bottom:0; border-radius:8px 8px 0 0; }
     .tea-layer { position:absolute; right:0; bottom:0; left:0; height:0; transition:height .25s ease; }
-    .tea-layer.milk { background:#f5d6c0; }
-    .tea-layer.pearls { background:radial-gradient(circle at 15px 12px, #633142 0 5px, transparent 6px) 0 0/28px 25px, #e6adc1; }
-    .tea-layer.cream { background:#fff8df; }
+    .tea-layer.milk { bottom:0; background:#f5d6c0; }
+    .tea-layer.pearls { bottom:0; background:radial-gradient(circle at 15px 12px, #633142 0 5px, transparent 6px) 0 0/28px 25px, #e6adc1; }
+    .tea-layer.cream { bottom:78px; background:#fff8df; }
     .tea-swing { position:absolute; top:13px; right:14px; left:14px; color:#986779; text-align:center; font-size:13px; line-height:1.55; }
     .tea-status { min-height:43px; margin:10px 0 0; color:#7d5060; text-align:center; font-size:13px; line-height:1.6; }
     .bouquet-stage { height:310px; background:#fff9fb; }
@@ -244,6 +244,9 @@
     .wrap-choice[data-wrap="lilac"] { background:#e2c3d8; }
     .wrap-choice.selected { outline:2px solid #a93c59; }
     .bouquet-target.wrapped::before { content:"小悦宝专属花束，包装完成"; }
+    .bouquet-target[data-wrap="rose"] { background:#f8ccd8; }
+    .bouquet-target[data-wrap="cream"] { background:#fff0c9; }
+    .bouquet-target[data-wrap="lilac"] { background:#e4c9dc; }
     @media (max-width:370px) { .page { padding-right:12px; padding-left:12px; } .hero { padding-right:20px; padding-left:20px; } .memory-grid { gap:7px; } .memory { min-height:137px; } .memory-art { height:78px; } .memory-card { min-height:70px; } }
     @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .envelope::after, .envelope-letter, .capsule, .star, .memory { transition:none; } }
   </style>
@@ -277,12 +280,14 @@
     </section>
 
     <section class="band">
-      <div class="band-head"><span class="number">01</span><div><h2>小悦宝的心动捕捉机</h2><p class="sub">十六秒内接住 10 颗飞来的爱心，把今天的好运都抓进来。</p></div></div>
+      <div class="band-head"><span class="number">01</span><div><h2>小悦宝的云朵接心机</h2><p class="sub">用手指拖动云朵托盘，接住爱心和会加分的幸运星。</p></div></div>
       <div class="catch-game" id="catchStage">
-        <div class="catch-score">已接住 <strong id="catchScore">0</strong> / 10</div>
-        <div class="catch-message" id="catchMessage" aria-live="polite">准备好了吗？爱心会从天空掉下来，快用手指接住它们。</div>
+        <div class="catch-score">甜度 <strong id="catchScore">0</strong> / 12</div>
+        <div class="catch-combo" id="catchCombo">连击 x 0</div>
+        <div class="catch-basket" id="catchBasket" aria-hidden="true"><span>&#9829;</span></div>
+        <div class="catch-message" id="catchMessage" aria-live="polite">按住空白处左右拖动，让云朵托盘接住掉下来的偏爱。</div>
       </div>
-      <button class="catch-start" id="catchStart" type="button">开始接住小悦宝的爱心</button>
+      <button class="catch-start" id="catchStart" type="button">开始云朵接心挑战</button>
     </section>
 
     <section class="band">
@@ -304,11 +309,18 @@
     </div>
 
     <section class="band">
-      <div class="band-head"><span class="number">03</span><div><h2>长按装满幸福瓶</h2><p class="sub">把按钮按住不放，给小悦宝蓄满今天的甜甜能量。</p></div></div>
-      <div class="hold-stage">
-        <div class="bottle" aria-hidden="true"><div class="bottle-fill" id="bottleFill"></div></div>
-        <button class="hold-button" id="holdButton" type="button">按住不放，装满幸福</button>
-        <p class="hold-status" id="holdStatus" aria-live="polite">装满以后，会有一份小悦宝专属的奖励。</p>
+      <div class="band-head"><span class="number">03</span><div><h2>小悦宝的奶茶工坊</h2><p class="sub">先选三种喜欢的配料，再按住杯子左右甩一甩，把甜度搅匀。</p></div></div>
+      <div class="tea-game">
+        <div class="tea-ingredients" id="teaIngredients">
+          <button class="tea-ingredient" type="button" data-ingredient="milk"><span>&#9679;</span>鲜奶</button>
+          <button class="tea-ingredient" type="button" data-ingredient="pearls"><span>&#9829;</span>珍珠</button>
+          <button class="tea-ingredient" type="button" data-ingredient="cream"><span>&#10022;</span>奶盖</button>
+        </div>
+        <div class="tea-mixing-zone" id="teaMixZone">
+          <p class="tea-swing" id="teaSwing">选好三种配料后，按住杯子左右摇一摇。</p>
+          <div class="tea-cup" id="teaCup" aria-hidden="true"><div class="tea-layer milk" id="teaMilk"></div><div class="tea-layer pearls" id="teaPearls"></div><div class="tea-layer cream" id="teaCream"></div></div>
+        </div>
+        <p class="tea-status" id="teaStatus" aria-live="polite">今天的小悦宝想喝什么甜甜的，都可以加进来。</p>
       </div>
     </section>
 
@@ -320,8 +332,13 @@
         <button class="flower-token" type="button" data-flower="2" style="top:111px;left:28px" aria-label="拖动紫粉小花">&#10047;</button>
         <button class="flower-token" type="button" data-flower="3" style="top:102px;right:38px" aria-label="拖动金色小花">&#10047;</button>
         <div class="bouquet-target" id="bouquetTarget" aria-label="小悦宝的花束"></div>
+        <div class="wrap-choices" id="wrapChoices" aria-label="选择花束包装纸">
+          <button class="wrap-choice" type="button" data-wrap="rose">樱花粉</button>
+          <button class="wrap-choice" type="button" data-wrap="cream">奶油金</button>
+          <button class="wrap-choice" type="button" data-wrap="lilac">葡萄紫</button>
+        </div>
       </div>
-      <p class="bouquet-note" id="bouquetNote" aria-live="polite">按住一朵花，拖到下面的花束里。收下任意三朵就能完成。</p>
+      <p class="bouquet-note" id="bouquetNote" aria-live="polite">按住一朵花，拖到下面的花束里。放好三朵后，再挑一张最喜欢的包装纸。</p>
     </section>
 
     <section class="band">
@@ -548,57 +565,104 @@
 
     const catchStage = document.querySelector('#catchStage');
     const catchStart = document.querySelector('#catchStart');
+    const catchBasket = document.querySelector('#catchBasket');
+    const catchCombo = document.querySelector('#catchCombo');
     let catchScore = 0;
+    let catchComboCount = 0;
     let catchActive = false;
-    let catchInterval;
-    let catchTimer;
-    function updateCatchScore() {
-      document.querySelector('#catchScore').textContent = catchScore;
+    let catchPointerDown = false;
+    let catchBasketX = 0;
+    let catchPieces = [];
+    let catchFrame;
+    let catchSpawnAt = 0;
+    let catchEndsAt = 0;
+    function updateCatchScore() { document.querySelector('#catchScore').textContent = catchScore; }
+    function moveCatchBasket(clientX) {
+      const bounds = catchStage.getBoundingClientRect();
+      catchBasketX = Math.max(50, Math.min(bounds.width - 50, clientX - bounds.left));
+      catchBasket.style.left = `${catchBasketX}px`;
+    }
+    function clearCatchPieces() {
+      catchPieces.forEach((piece) => piece.node.remove());
+      catchPieces = [];
     }
     function finishCatch(won) {
       catchActive = false;
-      clearInterval(catchInterval);
-      clearTimeout(catchTimer);
-      catchStage.querySelectorAll('.falling-heart').forEach((heart) => heart.remove());
+      cancelAnimationFrame(catchFrame);
+      clearCatchPieces();
       if (won) {
         collectLove('catch');
-        document.querySelector('#catchMessage').textContent = '小悦宝太厉害了，十颗爱心全部接住。今天的好运和偏爱，都归你。';
+        document.querySelector('#catchMessage').textContent = '小悦宝接住了满满一托盘偏爱，今天的好运和甜甜的奖励都归你。';
       } else {
-        document.querySelector('#catchMessage').textContent = `这次接住了 ${catchScore} 颗，再试一次吧，爱心会一直飞向小悦宝。`;
+        document.querySelector('#catchMessage').textContent = `这次收集到 ${catchScore} 份甜度，再玩一次，把偏爱全部接住。`;
       }
-      catchStart.textContent = '再玩一局心动捕捉';
+      catchStart.textContent = '再玩一局云朵接心';
     }
-    function spawnHeart() {
+    function spawnCatchPiece(bounds) {
+      const lucky = Math.random() > .75;
+      const node = document.createElement('span');
+      node.className = 'falling-heart';
+      node.innerHTML = lucky ? '&#10022;' : '&#9829;';
+      if (lucky) node.style.background = '#e8aa55';
+      catchStage.appendChild(node);
+      catchPieces.push({ node, x: 8 + Math.random() * (bounds.width - 52), y: 8, speed: 1.7 + Math.random() * 1.15, value: lucky ? 2 : 1 });
+    }
+    function runCatchGame(now) {
       if (!catchActive) return;
-      const heart = document.createElement('button');
-      const duration = 2200 + Math.random() * 1200;
-      heart.type = 'button';
-      heart.className = 'falling-heart';
-      heart.innerHTML = '&#9829;';
-      heart.style.left = `${8 + Math.random() * 82}%`;
-      heart.style.setProperty('--fall-duration', `${duration}ms`);
-      heart.addEventListener('click', () => {
-        if (!catchActive) return;
-        heart.remove();
-        catchScore += 1;
-        updateCatchScore();
-        if (catchScore >= 10) finishCatch(true);
-      }, { once: true });
-      catchStage.appendChild(heart);
-      setTimeout(() => heart.remove(), duration + 80);
+      const bounds = catchStage.getBoundingClientRect();
+      if (!catchSpawnAt || now - catchSpawnAt > 620) {
+        spawnCatchPiece(bounds);
+        catchSpawnAt = now;
+      }
+      catchPieces = catchPieces.filter((piece) => {
+        piece.y += piece.speed;
+        piece.node.style.transform = `translate(${piece.x}px, ${piece.y}px) rotate(${piece.y * .55}deg)`;
+        const caught = piece.y > bounds.height - 94 && piece.y < bounds.height - 39 && piece.x + 34 > catchBasketX - 50 && piece.x < catchBasketX + 50;
+        if (caught) {
+          piece.node.remove();
+          catchScore += piece.value;
+          catchComboCount += 1;
+          updateCatchScore();
+          catchCombo.textContent = `连击 x ${catchComboCount}`;
+          catchCombo.classList.remove('show');
+          requestAnimationFrame(() => catchCombo.classList.add('show'));
+          document.querySelector('#catchMessage').textContent = piece.value === 2 ? '幸运星被小悦宝接住啦，甜度加 2。' : '稳稳接住一颗爱心，继续左右移动托盘。';
+          if (catchScore >= 12) finishCatch(true);
+          return false;
+        }
+        if (piece.y > bounds.height + 20) {
+          piece.node.remove();
+          catchComboCount = 0;
+          return false;
+        }
+        return true;
+      });
+      if (catchActive && now >= catchEndsAt) finishCatch(catchScore >= 12);
+      if (catchActive) catchFrame = requestAnimationFrame(runCatchGame);
     }
+    catchStage.addEventListener('pointerdown', (event) => {
+      if (!catchActive) return;
+      catchPointerDown = true;
+      catchStage.setPointerCapture(event.pointerId);
+      moveCatchBasket(event.clientX);
+    });
+    catchStage.addEventListener('pointermove', (event) => { if (catchActive && catchPointerDown) moveCatchBasket(event.clientX); });
+    ['pointerup', 'pointercancel'].forEach((name) => catchStage.addEventListener(name, () => { catchPointerDown = false; }));
     catchStart.addEventListener('click', () => {
-      clearInterval(catchInterval);
-      clearTimeout(catchTimer);
-      catchStage.querySelectorAll('.falling-heart').forEach((heart) => heart.remove());
+      cancelAnimationFrame(catchFrame);
+      clearCatchPieces();
       catchScore = 0;
+      catchComboCount = 0;
       catchActive = true;
+      catchBasketX = catchStage.getBoundingClientRect().width / 2;
+      catchBasket.style.left = `${catchBasketX}px`;
       updateCatchScore();
-      catchStart.textContent = '正在捕捉中...';
-      document.querySelector('#catchMessage').textContent = '爱心已经出发，快接住 10 颗。';
-      spawnHeart();
-      catchInterval = setInterval(spawnHeart, 520);
-      catchTimer = setTimeout(() => finishCatch(catchScore >= 10), 16000);
+      catchCombo.textContent = '连击 x 0';
+      catchStart.textContent = '挑战进行中...';
+      document.querySelector('#catchMessage').textContent = '按住舞台空白处，左右拖动云朵托盘。接到幸运星会加倍。';
+      catchSpawnAt = 0;
+      catchEndsAt = performance.now() + 18000;
+      catchFrame = requestAnimationFrame(runCatchGame);
     });
 
     const scratchCanvas = document.querySelector('#scratchCanvas');
@@ -671,40 +735,65 @@
     resetScratchCard();
     window.addEventListener('resize', resetScratchCard);
 
-    const holdButton = document.querySelector('#holdButton');
-    const bottleFill = document.querySelector('#bottleFill');
-    let holdFrame;
-    let holdStart = 0;
-    let holdFinished = false;
-    function stopHolding() {
-      if (holdFinished) return;
-      cancelAnimationFrame(holdFrame);
-      bottleFill.style.height = '0%';
-      document.querySelector('#holdStatus').textContent = '差一点点就装满啦，再按住一会儿。';
+    const teaMixZone = document.querySelector('#teaMixZone');
+    const teaCup = document.querySelector('#teaCup');
+    const teaAdded = new Set();
+    let teaMixing = false;
+    let teaLastX = 0;
+    let teaLastDirection = 0;
+    let teaSwings = 0;
+    let teaFinished = false;
+    function updateTeaLayers() {
+      document.querySelector('#teaMilk').style.height = teaAdded.has('milk') ? '62px' : '0';
+      document.querySelector('#teaPearls').style.height = teaAdded.has('pearls') ? '53px' : '0';
+      document.querySelector('#teaCream').style.height = teaAdded.has('cream') ? '25px' : '0';
     }
-    function fillBottle(now) {
-      const percent = Math.min(1, (now - holdStart) / 2600);
-      bottleFill.style.height = `${percent * 100}%`;
-      if (percent >= 1) {
-        holdFinished = true;
-        holdButton.disabled = true;
-        holdButton.textContent = '幸福瓶装满啦';
-        document.querySelector('#holdStatus').textContent = '装满成功：小悦宝今天的快乐已加满，记得把委屈也交给我一点。';
-        collectLove('hold');
-        return;
-      }
-      holdFrame = requestAnimationFrame(fillBottle);
+    function finishTea() {
+      teaFinished = true;
+      teaCup.style.transform = 'translateX(-50%) rotate(0deg)';
+      document.querySelector('#teaSwing').textContent = '小悦宝特调奶茶完成。';
+      document.querySelector('#teaStatus').textContent = '今日出品：小悦宝专属三倍甜奶茶。喝完要记得把笑容也留给小周宝一点。';
+      collectLove('hold');
     }
-    holdButton.addEventListener('pointerdown', (event) => {
-      if (holdFinished) return;
-      event.preventDefault();
-      holdButton.setPointerCapture(event.pointerId);
-      holdStart = performance.now();
-      document.querySelector('#holdStatus').textContent = '不松手，幸福正在一点点装进瓶子里。';
-      holdFrame = requestAnimationFrame(fillBottle);
+    document.querySelectorAll('.tea-ingredient').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (teaFinished) return;
+        teaAdded.add(button.dataset.ingredient);
+        button.classList.add('added');
+        updateTeaLayers();
+        if (teaAdded.size === 3) {
+          document.querySelector('#teaSwing').textContent = '配料齐啦，按住杯子左右甩 6 下，把甜度搅匀。';
+          document.querySelector('#teaStatus').textContent = '现在轮到小悦宝亲手调出今天的专属甜度。';
+        } else {
+          document.querySelector('#teaStatus').textContent = `已经加好 ${teaAdded.size} 种配料，再挑 ${3 - teaAdded.size} 种。`;
+        }
+      });
     });
-    ['pointerup', 'pointercancel', 'pointerleave'].forEach((name) => holdButton.addEventListener(name, stopHolding));
-    holdButton.addEventListener('contextmenu', (event) => event.preventDefault());
+    teaMixZone.addEventListener('pointerdown', (event) => {
+      if (teaAdded.size !== 3 || teaFinished) return;
+      teaMixing = true;
+      teaLastX = event.clientX;
+      teaLastDirection = 0;
+      teaMixZone.setPointerCapture(event.pointerId);
+    });
+    teaMixZone.addEventListener('pointermove', (event) => {
+      if (!teaMixing || teaFinished) return;
+      const delta = event.clientX - teaLastX;
+      if (Math.abs(delta) < 11) return;
+      const direction = Math.sign(delta);
+      teaCup.style.transform = `translateX(-50%) rotate(${Math.max(-17, Math.min(17, delta))}deg)`;
+      if (teaLastDirection && direction !== teaLastDirection) {
+        teaSwings += 1;
+        document.querySelector('#teaSwing').textContent = `甜度搅拌中：${teaSwings} / 6`;
+        if (teaSwings >= 6) finishTea();
+      }
+      teaLastDirection = direction;
+      teaLastX = event.clientX;
+    });
+    ['pointerup', 'pointercancel'].forEach((name) => teaMixZone.addEventListener(name, () => {
+      teaMixing = false;
+      if (!teaFinished) teaCup.style.transform = 'translateX(-50%) rotate(0deg)';
+    }));
 
     const bouquetTarget = document.querySelector('#bouquetTarget');
     const bouquetNote = document.querySelector('#bouquetNote');
@@ -745,14 +834,24 @@
         placedFlowers.add(source.dataset.flower);
         if (placedFlowers.size >= 3) {
           bouquetTarget.classList.add('ready');
-          bouquetNote.textContent = '小悦宝的花束完成啦：这束花的花语是“你值得一直被温柔对待”。';
-          collectLove('bouquet');
-          recordSecretRoute('bouquet');
+          document.querySelector('#wrapChoices').classList.add('show');
+          bouquetNote.textContent = '花朵都放好啦。再挑一张包装纸，把花束变成小悦宝的专属款。';
         } else {
           bouquetNote.textContent = `已经放进 ${placedFlowers.size} 朵花，再挑 ${3 - placedFlowers.size} 朵，花束就完成啦。`;
         }
       }
       activeFlower = null;
+    });
+    document.querySelectorAll('.wrap-choice').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.wrap-choice').forEach((item) => item.classList.remove('selected'));
+        button.classList.add('selected');
+        bouquetTarget.dataset.wrap = button.dataset.wrap;
+        bouquetTarget.classList.add('wrapped');
+        bouquetNote.textContent = '小悦宝的专属花束包装好啦：这束花的花语是“被偏爱这件事，你永远排第一”。';
+        collectLove('bouquet');
+        recordSecretRoute('bouquet');
+      });
     });
 
     const taskReplies = [
