@@ -591,36 +591,46 @@
     let audioContext;
     let musicTimer;
     let musicOn = false;
-    function playSoftNote(frequency, delay) {
+    let musicMaster;
+    function playSoftNote(frequency, delay, duration, volume, wave = 'triangle') {
       const oscillator = audioContext.createOscillator();
       const gain = audioContext.createGain();
-      oscillator.type = 'sine';
+      oscillator.type = wave;
       oscillator.frequency.value = frequency;
       gain.gain.setValueAtTime(.0001, audioContext.currentTime + delay);
-      gain.gain.exponentialRampToValueAtTime(.025, audioContext.currentTime + delay + .08);
-      gain.gain.exponentialRampToValueAtTime(.0001, audioContext.currentTime + delay + 1.25);
-      oscillator.connect(gain).connect(audioContext.destination);
+      gain.gain.exponentialRampToValueAtTime(volume, audioContext.currentTime + delay + .06);
+      gain.gain.exponentialRampToValueAtTime(.0001, audioContext.currentTime + delay + duration);
+      oscillator.connect(gain).connect(musicMaster);
       oscillator.start(audioContext.currentTime + delay);
-      oscillator.stop(audioContext.currentTime + delay + 1.35);
+      oscillator.stop(audioContext.currentTime + delay + duration + .08);
     }
     function playMusicPhrase() {
-      [523.25, 659.25, 783.99, 659.25].forEach((note, index) => playSoftNote(note, index * .42));
+      const melody = [659.25, 783.99, 880, 783.99, 659.25, 587.33, 659.25, 523.25, 587.33, 659.25, 783.99, 659.25, 587.33, 523.25, 493.88, 523.25];
+      melody.forEach((note, index) => playSoftNote(note, index * .48, .43, .034));
+      [[261.63, 329.63, 392], [220, 277.18, 329.63], [196, 246.94, 293.66], [220, 277.18, 329.63]].forEach((chord, index) => {
+        chord.forEach((note) => playSoftNote(note, index * 1.92, 1.72, .009, 'sine'));
+      });
+      [130.81, 110, 98, 110].forEach((note, index) => playSoftNote(note, index * 1.92, 1.15, .022, 'sine'));
     }
     async function startMusic() {
       const AudioEngine = window.AudioContext || window.webkitAudioContext;
       if (!AudioEngine || musicOn) return;
       if (!audioContext) audioContext = new AudioEngine();
       if (audioContext.state === 'suspended') await audioContext.resume();
+      musicMaster = audioContext.createGain();
+      musicMaster.gain.value = .7;
+      musicMaster.connect(audioContext.destination);
       musicOn = true;
       const toggle = document.querySelector('#soundToggle');
       playMusicPhrase();
-      musicTimer = setInterval(playMusicPhrase, 2100);
+      musicTimer = setInterval(playMusicPhrase, 7680);
       toggle.innerHTML = '&#9835;';
       toggle.setAttribute('aria-label', '关闭轻音乐');
       toggle.title = '关闭轻音乐';
     }
     function stopMusic() {
       clearInterval(musicTimer);
+      if (musicMaster) musicMaster.gain.setTargetAtTime(.0001, audioContext.currentTime, .03);
       musicOn = false;
       const toggle = document.querySelector('#soundToggle');
       toggle.innerHTML = '&#9834;';
