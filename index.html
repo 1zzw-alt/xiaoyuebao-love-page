@@ -1015,7 +1015,9 @@
     let scratchActive = false;
     let scratchMarks = 0;
     let scratchFinished = false;
+    let heartSurpriseTimer;
     function resetScratchCard() {
+      clearTimeout(heartSurpriseTimer);
       const ratio = Math.min(window.devicePixelRatio || 1, 2);
       const bounds = scratchCanvas.getBoundingClientRect();
       scratchCanvas.width = Math.round(bounds.width * ratio);
@@ -1039,6 +1041,16 @@
       scratchMarks = 0;
       scratchFinished = false;
     }
+    function scratchCoverage() {
+      const pixels = scratchContext.getImageData(0, 0, scratchCanvas.width, scratchCanvas.height).data;
+      let cleared = 0;
+      let sampled = 0;
+      for (let index = 3; index < pixels.length; index += 32) {
+        sampled += 1;
+        if (pixels[index] < 28) cleared += 1;
+      }
+      return cleared / sampled;
+    }
     function scratchAt(event) {
       if (scratchFinished) return;
       const bounds = scratchCanvas.getBoundingClientRect();
@@ -1049,17 +1061,17 @@
       scratchContext.arc(x, y, 22, 0, Math.PI * 2);
       scratchContext.fill();
       scratchMarks += 1;
-      if (scratchMarks >= 55) {
+      if (scratchMarks >= 18 && scratchCoverage() >= .62) {
         scratchFinished = true;
         scratchContext.clearRect(0, 0, bounds.width, bounds.height);
         collectLove('scratch');
         recordSecretRoute('scratch');
-        document.querySelector('#scratchHelp').textContent = '刮开成功。小悦宝的奖励已经送达，今天可以理直气壮地被偏爱。';
-        setTimeout(() => {
+        document.querySelector('#scratchHelp').textContent = '小悦宝把好运全刮出来啦，爱心正在带着惊喜赶来。';
+        heartSurpriseTimer = setTimeout(() => {
           const surprise = document.querySelector('#heartSurprise');
           surprise.classList.add('show');
           surprise.setAttribute('aria-hidden', 'false');
-        }, 380);
+        }, 2000);
       }
     }
     scratchCanvas.addEventListener('pointerdown', (event) => {
