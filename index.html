@@ -82,6 +82,15 @@
     .scratch-reveal span { display:block; color:#805665; font-size:14px; line-height:1.7; }
     #scratchCanvas { position:absolute; inset:0; width:100%; height:100%; touch-action:none; cursor:crosshair; }
     .scratch-help { margin:10px 0 0; color:var(--muted); text-align:center; font-size:13px; }
+    .heart-surprise { position:fixed; z-index:20; inset:0; display:grid; place-items:center; padding:24px; background:rgba(49,20,34,.56); opacity:0; pointer-events:none; transition:opacity .25s ease; }
+    .heart-surprise.show { opacity:1; pointer-events:auto; }
+    .heart-surprise-card { position:relative; width:min(100%,335px); padding:28px 24px 24px; overflow:hidden; color:#fff; background:#c64f6d; box-shadow:0 18px 45px rgba(40,12,25,.34); text-align:center; transform:translateY(14px) scale(.94); transition:transform .32s cubic-bezier(.2,.9,.3,1.2); }
+    .heart-surprise.show .heart-surprise-card { transform:translateY(0) scale(1); }
+    .heart-surprise-card::before { content:""; position:absolute; top:-71px; left:50%; width:160px; height:160px; border:1px solid rgba(255,238,203,.65); border-radius:50%; transform:translateX(-50%); }
+    .heart-surprise-icon { position:relative; display:block; margin-bottom:13px; color:#ffe8ad; font-size:52px; line-height:1; }
+    .heart-surprise-card b { position:relative; display:block; font-family:"ZCOOL KuaiLe",cursive; font-size:21px; font-weight:400; }
+    .heart-surprise-card p { position:relative; margin:12px 0 18px; color:#fff0f3; font-size:14px; line-height:1.8; }
+    .heart-surprise-close { position:relative; min-height:38px; padding:7px 17px; color:var(--wine); border:0; background:#ffe4a7; font-size:13px; }
     .hold-stage { padding:20px 16px; border:1px solid #e9c9d1; background:#fffafa; text-align:center; }
     .bottle { position:relative; width:88px; height:124px; margin:0 auto 15px; overflow:hidden; border:4px solid #d85c77; border-top:0; border-radius:12px 12px 28px 28px; background:#fff1f4; }
     .bottle::before { content:""; position:absolute; top:-12px; left:26px; width:28px; height:16px; border:4px solid #d85c77; border-bottom:0; border-radius:7px 7px 0 0; background:#fffafa; }
@@ -188,7 +197,54 @@
     .letter p { margin:0 0 13px; font-size:15px; line-height:2; }
     .letter .sign { margin:15px 0 0; color:#95606d; font-size:13px; }
     .footer { margin:27px 0 0; color:#e9bdc9; text-align:center; font-size:12px; }
-    @media (max-width:370px) { .page { padding-right:12px; padding-left:12px; } .hero { padding-right:20px; padding-left:20px; } .memory-grid { gap:7px; } .memory { min-height:137px; } .memory-art { height:78px; } }
+    .catch-game { height:292px; border:2px solid #f1b3c2; background:linear-gradient(#fff8fb 0 72%, #f8dfe7 72%); touch-action:none; }
+    .catch-game::before { opacity:.5; background-image:radial-gradient(circle, #ef9bb0 0 1px, transparent 1.8px), radial-gradient(circle, #f2cd88 0 1px, transparent 1.8px); background-size:44px 44px, 92px 92px; }
+    .catch-score { border:1px solid #f0ccd5; box-shadow:0 3px 0 #f6e0e5; }
+    .catch-combo { position:absolute; z-index:2; top:18px; right:15px; color:#c2526d; font-family:"ZCOOL KuaiLe",cursive; font-size:14px; opacity:0; transition:opacity .2s ease, transform .2s ease; }
+    .catch-combo.show { opacity:1; transform:scale(1.12); }
+    .catch-basket { position:absolute; z-index:2; bottom:26px; left:50%; width:98px; height:50px; border:3px solid #c65772; border-top:0; border-radius:0 0 48px 48px; background:#fff5e9; transform:translateX(-50%); pointer-events:none; }
+    .catch-basket::before { content:""; position:absolute; top:-15px; left:7px; width:78px; height:20px; border:3px solid #c65772; border-bottom:0; border-radius:50% 50% 0 0; }
+    .catch-basket span { position:absolute; top:6px; width:100%; color:#d55a74; text-align:center; font-size:19px; }
+    .falling-heart { top:13px; width:39px; height:39px; border:2px solid #fff; box-shadow:0 4px 0 rgba(177,57,87,.28); animation:none; }
+    .catch-message { bottom:8px; min-height:38px; padding:9px; border:1px solid #f3d7de; }
+    .catch-start { letter-spacing:1px; }
+    .memory-game { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; padding:12px; background:#fae0e7; }
+    .memory-card { position:relative; min-height:84px; padding:0; border:0; background:transparent; perspective:600px; }
+    .memory-card-inner { position:absolute; inset:0; display:grid; place-items:center; color:#fff; border:1px solid #be536e; background:#d65d78; font-size:27px; transform-style:preserve-3d; transition:transform .35s ease; }
+    .memory-card-inner::after { content:"?"; position:absolute; color:#ffe7ee; font-family:"ZCOOL KuaiLe",cursive; font-size:28px; backface-visibility:hidden; }
+    .memory-card.revealed .memory-card-inner, .memory-card.matched .memory-card-inner { color:var(--wine); background:#fffdfd; transform:rotateY(180deg); }
+    .memory-card.revealed .memory-card-inner::after, .memory-card.matched .memory-card-inner::after { display:none; }
+    .memory-card.matched .memory-card-inner { color:#fff; border-color:#e4a13d; background:#d9a648; box-shadow:0 3px 0 #b98130; }
+    .memory-result { min-height:56px; margin:10px 0 0; padding:11px; color:#7d5060; background:#fffafa; text-align:center; font-size:13px; line-height:1.6; }
+    .memory-restart { width:100%; min-height:42px; margin-top:9px; color:var(--wine); border:1px solid #e2a8b7; background:#fff5f7; }
+    .tea-game { padding:16px 13px; border:1px solid #e8c3cd; background:#fffafa; }
+    .tea-ingredients { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .tea-ingredient { min-height:56px; color:var(--wine); border:1px solid #efcbd4; background:#fffdfd; font-size:13px; }
+    .tea-ingredient span { display:block; margin-bottom:3px; color:#d85b76; font-size:20px; }
+    .tea-ingredient.added { color:#fff; border-color:#bf516c; background:#c75571; }
+    .tea-ingredient.added span { color:#ffe9ad; }
+    .tea-mixing-zone { position:relative; height:165px; margin-top:13px; overflow:hidden; border:1px dashed #e5a3b3; background:#fff3f6; touch-action:none; }
+    .tea-cup { position:absolute; bottom:19px; left:50%; width:92px; height:112px; overflow:hidden; border:4px solid #c95873; border-top:0; border-radius:12px 12px 28px 28px; background:#fffdfd; transform:translateX(-50%); transform-origin:50% 100%; transition:transform .08s ease; }
+    .tea-cup::before { content:""; position:absolute; top:-16px; left:27px; width:30px; height:18px; border:4px solid #c95873; border-bottom:0; border-radius:8px 8px 0 0; }
+    .tea-layer { position:absolute; right:0; bottom:0; left:0; height:0; transition:height .25s ease; }
+    .tea-layer.milk { background:#f5d6c0; }
+    .tea-layer.pearls { background:radial-gradient(circle at 15px 12px, #633142 0 5px, transparent 6px) 0 0/28px 25px, #e6adc1; }
+    .tea-layer.cream { background:#fff8df; }
+    .tea-swing { position:absolute; top:13px; right:14px; left:14px; color:#986779; text-align:center; font-size:13px; line-height:1.55; }
+    .tea-status { min-height:43px; margin:10px 0 0; color:#7d5060; text-align:center; font-size:13px; line-height:1.6; }
+    .bouquet-stage { height:310px; background:#fff9fb; }
+    .bouquet-stage::before { opacity:.3; background-image:radial-gradient(circle, #edb4c1 0 1px, transparent 1.8px); background-size:28px 28px; }
+    .bouquet-target { min-height:128px; border-width:2px; }
+    .bouquet-target::before { content:"先拖三朵喜欢的花进来"; }
+    .wrap-choices { display:none; position:absolute; z-index:4; right:10px; bottom:9px; left:10px; grid-template-columns:repeat(3,1fr); gap:6px; }
+    .wrap-choices.show { display:grid; }
+    .wrap-choice { min-height:33px; color:#7e4555; border:1px solid #d9869a; background:#fffdfd; font-size:11px; }
+    .wrap-choice[data-wrap="rose"] { background:#f3bfd0; }
+    .wrap-choice[data-wrap="cream"] { background:#fff0c9; }
+    .wrap-choice[data-wrap="lilac"] { background:#e2c3d8; }
+    .wrap-choice.selected { outline:2px solid #a93c59; }
+    .bouquet-target.wrapped::before { content:"小悦宝专属花束，包装完成"; }
+    @media (max-width:370px) { .page { padding-right:12px; padding-left:12px; } .hero { padding-right:20px; padding-left:20px; } .memory-grid { gap:7px; } .memory { min-height:137px; } .memory-art { height:78px; } .memory-card { min-height:70px; } }
     @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .envelope::after, .envelope-letter, .capsule, .star, .memory { transition:none; } }
   </style>
 </head>
@@ -237,6 +293,15 @@
       </div>
       <p class="scratch-help" id="scratchHelp">从卡片上用手指来回擦一擦吧。</p>
     </section>
+
+    <div class="heart-surprise" id="heartSurprise" aria-hidden="true">
+      <div class="heart-surprise-card" role="dialog" aria-modal="true" aria-labelledby="heartSurpriseTitle">
+        <span class="heart-surprise-icon" aria-hidden="true">&#9829;</span>
+        <b id="heartSurpriseTitle">小悦宝的幸运爱心</b>
+        <p>悄悄告诉你哦：下次和你的小周宝一起去玩，幸运会偷偷偏向你，大奖也会朝你跑过来。</p>
+        <button class="heart-surprise-close" id="heartSurpriseClose" type="button">收下这份好运</button>
+      </div>
+    </div>
 
     <section class="band">
       <div class="band-head"><span class="number">03</span><div><h2>长按装满幸福瓶</h2><p class="sub">把按钮按住不放，给小悦宝蓄满今天的甜甜能量。</p></div></div>
@@ -581,6 +646,11 @@
         collectLove('scratch');
         recordSecretRoute('scratch');
         document.querySelector('#scratchHelp').textContent = '刮开成功。小悦宝的奖励已经送达，今天可以理直气壮地被偏爱。';
+        setTimeout(() => {
+          const surprise = document.querySelector('#heartSurprise');
+          surprise.classList.add('show');
+          surprise.setAttribute('aria-hidden', 'false');
+        }, 380);
       }
     }
     scratchCanvas.addEventListener('pointerdown', (event) => {
@@ -593,6 +663,11 @@
       if (scratchActive) scratchAt(event);
     });
     ['pointerup', 'pointercancel'].forEach((name) => scratchCanvas.addEventListener(name, () => { scratchActive = false; }));
+    document.querySelector('#heartSurpriseClose').addEventListener('click', () => {
+      const surprise = document.querySelector('#heartSurprise');
+      surprise.classList.remove('show');
+      surprise.setAttribute('aria-hidden', 'true');
+    });
     resetScratchCard();
     window.addEventListener('resize', resetScratchCard);
 
