@@ -1,0 +1,949 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#2a1724" />
+  <title>小悦宝的恋爱游乐园</title>
+  <meta property="og:title" content="小悦宝，收一封甜甜的信" />
+  <meta property="og:description" content="这里有一座只为小悦宝开放的恋爱游乐园。" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=1200&q=90" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet" />
+  <style>
+    :root { --ink:#442936; --muted:#956b79; --rose:#df6379; --wine:#922d49; --pink:#fff1f5; --paper:#fffdfd; --line:#efcfd8; --night:#2a1724; --gold:#efc574; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { min-width:320px; margin:0; color:var(--ink); background:var(--night); font-family:"Noto Serif SC",serif; }
+    button, summary { font:inherit; -webkit-tap-highlight-color:transparent; }
+    button { cursor:pointer; }
+    #sky { position:fixed; z-index:0; inset:0; width:100%; height:100%; pointer-events:none; }
+    .opening { position:relative; z-index:1; display:grid; min-height:100svh; place-items:center; padding:28px 20px; background:rgba(42,23,36,.46); }
+    .opening-inner { width:min(100%,395px); text-align:center; }
+    .opening-kicker { margin:0 0 12px; color:#f4c7d3; font-family:"ZCOOL KuaiLe",cursive; font-size:17px; letter-spacing:1px; }
+    .opening-title { margin:0 0 25px; color:#fff6f8; font-size:30px; line-height:1.35; letter-spacing:0; }
+    .envelope { position:relative; width:100%; aspect-ratio:1.42; padding:0; overflow:hidden; border:0; background:#c8526b; box-shadow:0 22px 45px rgba(0,0,0,.28); }
+    .envelope::before { content:""; position:absolute; inset:0; z-index:2; background:#d96b7f; clip-path:polygon(0 100%,50% 43%,100% 100%); }
+    .envelope::after { content:""; position:absolute; inset:0; z-index:3; background:#c9516b; clip-path:polygon(0 0,100% 0,50% 63%); transform-origin:top; transition:transform .7s ease; }
+    .envelope:hover::after, .envelope:focus-visible::after { transform:rotateX(32deg); }
+    .envelope-letter { position:absolute; z-index:1; top:13%; right:13%; bottom:13%; left:13%; display:grid; place-items:center; padding:18px; color:var(--wine); border:1px solid #edcfd6; background:var(--paper); text-align:center; transition:transform .7s ease; }
+    .envelope:hover .envelope-letter, .envelope:focus-visible .envelope-letter { transform:translateY(-18px); }
+    .envelope-letter strong { display:block; font-family:"ZCOOL KuaiLe",cursive; font-size:25px; font-weight:400; }
+    .envelope-letter small { display:block; margin-top:8px; color:#916b76; font-size:13px; }
+    .seal { position:absolute; z-index:4; top:51%; left:50%; display:grid; width:58px; height:58px; place-items:center; color:#fff; border:3px solid #f6ced7; border-radius:50%; background:var(--wine); font-size:28px; transform:translate(-50%,-50%); }
+    .opening-hint { margin:21px 0 0; color:#f5d3dc; font-size:14px; }
+    .page { position:relative; z-index:1; display:none; width:min(100%,620px); min-height:100vh; margin:0 auto; padding:18px 16px 48px; background:rgba(255,241,245,.11); }
+    body.opened .opening { display:none; }
+    body.opened .page { display:block; }
+    .hero { position:relative; min-height:325px; overflow:hidden; padding:29px 25px 26px; color:#fff; background:#a83251; box-shadow:0 14px 30px rgba(34,10,23,.24); }
+    .hero::before { content:""; position:absolute; inset:0; opacity:.38; background:url('https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=1000&q=85') center/cover; mix-blend-mode:screen; }
+    .hero::after { content:""; position:absolute; right:-22px; bottom:-35px; width:174px; height:174px; border:1px solid rgba(255,236,212,.62); border-radius:50%; box-shadow:0 0 0 20px rgba(255,232,214,.1), 0 0 0 42px rgba(255,232,214,.06); }
+    .hero > * { position:relative; z-index:1; }
+    .hero-tools { position:absolute; z-index:2; top:17px; right:17px; }
+    .sound-toggle { display:grid; width:35px; height:35px; place-items:center; padding:0; color:#fff; border:1px solid rgba(255,255,255,.6); border-radius:50%; background:rgba(103,28,53,.35); font-size:16px; }
+    .hero-label { display:inline-block; margin:0 0 15px; padding:5px 10px; border:1px solid rgba(255,255,255,.7); font-family:"ZCOOL KuaiLe",cursive; font-size:14px; }
+    h1, h2, h3, p { margin-top:0; }
+    h1 { max-width:365px; margin-bottom:13px; font-size:clamp(32px,8vw,44px); line-height:1.22; letter-spacing:0; }
+    .hero-copy { max-width:335px; margin-bottom:21px; font-size:14px; line-height:1.8; }
+    .sweet-meter { display:flex; gap:5px; align-items:center; font-size:13px; }
+    .sweet-meter span { display:inline-block; color:#f6d8df; font-size:17px; }
+    .sweet-meter b { margin-left:5px; font-weight:600; }
+    .passport { display:flex; align-items:center; gap:9px; width:max-content; margin-top:18px; padding:8px 11px; color:#fff0f4; border:1px solid rgba(255,255,255,.44); background:rgba(91,24,48,.25); font-size:12px; }
+    .passport strong { color:#ffe7a9; font-family:"ZCOOL KuaiLe",cursive; font-size:16px; font-weight:400; }
+    .daily-gift { max-width:335px; margin:13px 0 0; padding:9px 11px; color:#ffe5eb; border-left:2px solid #ffd58d; background:rgba(102,25,50,.26); font-size:12px; line-height:1.65; }
+    .band { padding:27px 3px; border-bottom:1px dashed rgba(239,207,216,.72); }
+    .band-head { display:flex; gap:13px; align-items:flex-start; margin-bottom:17px; }
+    .number { display:grid; flex:0 0 auto; width:31px; height:31px; place-items:center; color:#fff; border-radius:50%; background:var(--rose); font-family:"ZCOOL KuaiLe",cursive; font-size:15px; }
+    .band h2 { margin:0; font-size:22px; line-height:1.35; }
+    .band .sub { margin:5px 0 0; color:var(--muted); font-size:13px; line-height:1.65; }
+    .task-list { display:grid; gap:9px; }
+    .task { display:grid; grid-template-columns:36px 1fr auto; gap:11px; align-items:center; width:100%; min-height:66px; padding:10px 13px; color:var(--ink); border:1px solid var(--line); background:rgba(255,253,253,.92); text-align:left; }
+    .task-icon { display:grid; width:33px; height:33px; place-items:center; color:var(--rose); border-radius:50%; background:#fff0f3; font-size:18px; }
+    .task b { display:block; font-size:14px; }
+    .task small { display:block; margin-top:2px; color:var(--muted); font-size:12px; }
+    .task-state { color:#c87a8d; font-size:12px; }
+    .task.done { border-color:#e3a4b4; background:#fff5f7; }
+    .task.done .task-icon { color:#fff; background:var(--wine); }
+    .task.done .task-state { color:var(--wine); }
+    .reply { min-height:58px; margin:12px 0 0; padding:12px 14px; color:#7e5260; border-left:3px solid var(--rose); background:#fff6f8; font-size:14px; line-height:1.7; }
+    .catch-game { position:relative; height:270px; overflow:hidden; border:1px solid #e7bdc9; background:#fff5f7; }
+    .catch-game::before { content:""; position:absolute; inset:0; opacity:.7; background-image:radial-gradient(circle, #f1bac7 0 1px, transparent 1.6px), radial-gradient(circle, #f6d18d 0 1px, transparent 1.8px); background-size:37px 37px, 79px 79px; background-position:3px 8px, 27px 49px; pointer-events:none; }
+    .catch-score { position:absolute; z-index:2; top:12px; left:12px; display:flex; gap:8px; align-items:center; padding:7px 10px; color:var(--wine); background:#fffdfd; font-size:13px; }
+    .catch-score strong { color:var(--rose); font-family:"ZCOOL KuaiLe",cursive; font-size:18px; font-weight:400; }
+    .catch-message { position:absolute; z-index:2; right:12px; bottom:12px; left:12px; min-height:45px; padding:11px; color:#7b5160; background:rgba(255,253,253,.93); text-align:center; font-size:13px; line-height:1.55; }
+    .catch-start { display:block; width:100%; min-height:44px; margin-top:10px; color:#fff; border:0; background:var(--rose); }
+    .falling-heart { position:absolute; z-index:1; top:-42px; width:39px; height:39px; padding:0; color:#fff; border:0; border-radius:50%; background:#d75b76; box-shadow:0 5px 0 #b83d5a; font-size:21px; animation:heart-fall var(--fall-duration) linear forwards; }
+    .falling-heart:nth-child(3n) { color:#fff8df; background:#eeb172; box-shadow:0 5px 0 #ce8956; }
+    @keyframes heart-fall { to { transform:translateY(310px) rotate(240deg); } }
+    .scratch-stage { position:relative; height:222px; overflow:hidden; border:1px solid #eac2cd; background:#fffdfd; }
+    .scratch-reveal { display:grid; height:100%; place-items:center; padding:24px; color:var(--wine); background:#ffe8ee; text-align:center; }
+    .scratch-reveal b { display:block; margin-bottom:9px; font-family:"ZCOOL KuaiLe",cursive; font-size:24px; font-weight:400; }
+    .scratch-reveal span { display:block; color:#805665; font-size:14px; line-height:1.7; }
+    #scratchCanvas { position:absolute; inset:0; width:100%; height:100%; touch-action:none; cursor:crosshair; }
+    .scratch-help { margin:10px 0 0; color:var(--muted); text-align:center; font-size:13px; }
+    .hold-stage { padding:20px 16px; border:1px solid #e9c9d1; background:#fffafa; text-align:center; }
+    .bottle { position:relative; width:88px; height:124px; margin:0 auto 15px; overflow:hidden; border:4px solid #d85c77; border-top:0; border-radius:12px 12px 28px 28px; background:#fff1f4; }
+    .bottle::before { content:""; position:absolute; top:-12px; left:26px; width:28px; height:16px; border:4px solid #d85c77; border-bottom:0; border-radius:7px 7px 0 0; background:#fffafa; }
+    .bottle-fill { position:absolute; right:0; bottom:0; left:0; height:0; background:#df6379; transition:height .06s linear; }
+    .bottle-fill::after { content:""; position:absolute; top:-7px; right:-5px; left:-5px; height:12px; border-radius:50%; background:#ef90a5; }
+    .hold-button { width:100%; min-height:50px; color:#fff; border:0; background:var(--wine); font-size:14px; touch-action:none; }
+    .hold-button:disabled { cursor:default; background:#bb7184; }
+    .hold-status { min-height:24px; margin:11px 0 0; color:var(--muted); font-size:13px; }
+    .bouquet-stage { position:relative; height:285px; overflow:hidden; border:1px solid #e9c6cf; background:#fff8fa; touch-action:none; }
+    .bouquet-stage::before { content:""; position:absolute; inset:0; opacity:.45; background-image:linear-gradient(90deg, transparent 49%, #f4d6dd 50%, transparent 51%), linear-gradient(0deg, transparent 49%, #f4d6dd 50%, transparent 51%); background-size:24px 24px; pointer-events:none; }
+    .flower-token { position:absolute; z-index:2; display:grid; width:55px; height:55px; place-items:center; padding:0; color:#d45273; border:1px solid #efbecb; border-radius:50%; background:#fffdfd; box-shadow:0 4px 0 #edc6d0; font-size:31px; touch-action:none; }
+    .flower-token[data-flower="1"] { color:#e28b68; }
+    .flower-token[data-flower="2"] { color:#c66997; }
+    .flower-token[data-flower="3"] { color:#d4a03b; }
+    .flower-token.drag-source { opacity:.23; }
+    .bouquet-target { position:absolute; z-index:1; right:18px; bottom:14px; left:18px; display:flex; min-height:116px; align-items:flex-end; justify-content:center; gap:3px; padding:17px 12px 13px; border:2px dashed #d98a9d; border-radius:58% 58% 18px 18px; background:rgba(255,231,237,.74); }
+    .bouquet-target::before { content:"把喜欢的花拖到这里"; position:absolute; top:14px; color:#a36b7a; font-size:12px; }
+    .bouquet-target .flower-token { position:relative; top:auto !important; right:auto !important; bottom:auto !important; left:auto !important; width:49px; height:49px; margin-bottom:0; border:0; background:transparent; box-shadow:none; font-size:34px; }
+    .bouquet-target.ready { border-style:solid; border-color:#c65370; background:#ffe8ee; }
+    .bouquet-note { min-height:51px; margin:10px 0 0; padding:11px; color:#7d5060; background:#fffafa; text-align:center; font-size:13px; line-height:1.6; }
+    .gacha-stage { position:relative; overflow:hidden; padding:19px 13px 14px; background:#f9dbe2; border:1px solid #ebbdc9; }
+    .gacha-stage::before { content:""; position:absolute; top:0; right:0; bottom:0; left:0; opacity:.48; background-image:linear-gradient(45deg, transparent 47%, #fff 48%, #fff 52%, transparent 53%); background-size:15px 15px; pointer-events:none; }
+    .gacha-stage > * { position:relative; z-index:1; }
+    .gacha-row { display:grid; grid-template-columns:repeat(3,1fr); gap:13px; }
+    .capsule { display:grid; min-height:101px; place-items:center; color:#fff; border:0; border-radius:50%; background:#d85e78; box-shadow:inset -10px -11px 0 rgba(126,35,64,.15), 0 6px 0 #b94360; font-size:30px; transition:transform .22s ease; }
+    .capsule:nth-child(2) { background:#efad80; box-shadow:inset -10px -11px 0 rgba(151,79,55,.15), 0 6px 0 #d48662; }
+    .capsule:nth-child(3) { background:#b95a83; box-shadow:inset -10px -11px 0 rgba(89,35,62,.15), 0 6px 0 #934165; }
+    .capsule:not(:disabled):hover, .capsule:not(:disabled):focus-visible { transform:translateY(-5px) rotate(-3deg); }
+    .capsule:disabled { cursor:default; opacity:.78; }
+    .gacha-result { min-height:61px; margin:16px 0 0; padding:12px; color:#7d4e5e; background:#fffdfd; text-align:center; font-size:14px; line-height:1.7; }
+    .shake-stage { position:relative; min-height:133px; margin-top:13px; padding:14px 14px 14px 120px; overflow:hidden; border:1px solid #e9c4ce; background:#fffafa; }
+    .shake-egg { position:absolute; top:18px; left:24px; display:grid; width:76px; height:92px; place-items:center; padding:0; color:#fff5da; border:0; border-radius:52% 52% 47% 47%; background:#d6607b; box-shadow:inset -11px -9px 0 rgba(113,29,55,.13), 0 5px 0 #b63f5c; font-size:28px; touch-action:manipulation; }
+    .shake-egg.shaking { animation:egg-wiggle .35s ease-in-out infinite; }
+    .shake-copy b { display:block; color:var(--wine); font-size:15px; }
+    .shake-copy p { margin:5px 0 0; color:var(--muted); font-size:12px; line-height:1.65; }
+    .shake-count { display:inline-block; margin-top:8px; color:#c8546f; font-family:"ZCOOL KuaiLe",cursive; font-size:14px; }
+    @keyframes egg-wiggle { 0%,100% { transform:rotate(-8deg); } 50% { transform:rotate(8deg); } }
+    .constellation { position:relative; display:grid; grid-template-columns:repeat(5,1fr); gap:8px; padding:19px 9px 12px; background:#30202c; }
+    .constellation::before { content:""; position:absolute; top:48px; right:12%; left:12%; height:1px; background:#cc788e; transform:rotate(-4deg); }
+    .star { position:relative; z-index:1; display:grid; width:100%; aspect-ratio:1; place-items:center; padding:0; color:#f8c4d1; border:1px solid #a76478; border-radius:50%; background:#382330; font-size:25px; transition:transform .2s ease, background .2s ease; }
+    .star:not(:disabled):hover, .star:not(:disabled):focus-visible { transform:translateY(-4px) scale(1.07); }
+    .star.lit { color:#fff6d6; border-color:#f5cc77; background:#b44e69; box-shadow:0 0 15px rgba(250,202,113,.7); }
+    .star:disabled { cursor:default; }
+    .star-reply { min-height:57px; margin:0; padding:13px; color:#794c5a; background:#fff0f4; text-align:center; font-size:14px; line-height:1.65; }
+    .memory-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+    .memory { min-height:151px; padding:9px 8px 10px; color:var(--ink); border:1px solid #edd4da; background:#fffdfd; box-shadow:3px 4px 0 #f1dce1; text-align:center; transition:transform .2s ease; }
+    .memory:nth-child(2) { transform:translateY(8px) rotate(2deg); }
+    .memory:nth-child(3) { transform:rotate(-2deg); }
+    .memory:not(.revealed):hover, .memory:not(.revealed):focus-visible { transform:translateY(-4px) rotate(0); }
+    .memory-art { display:grid; height:88px; place-items:center; color:#d85d77; background:#ffe8ee; font-size:36px; }
+    .memory:nth-child(2) .memory-art { color:#d1806d; background:#ffeadf; }
+    .memory:nth-child(3) .memory-art { color:#b55e84; background:#f8e3ed; }
+    .memory span { display:block; margin-top:8px; font-size:12px; line-height:1.35; }
+    .memory.revealed { color:#fff; border-color:var(--wine); background:var(--wine); box-shadow:3px 4px 0 #702138; }
+    .memory.revealed .memory-art { color:#fff6df; background:#bd4f6a; }
+    .memory-reply { min-height:58px; margin:16px 0 0; padding:12px; color:#7d4e5d; border:1px solid #efd3d9; background:#fffafa; font-size:14px; line-height:1.65; text-align:center; }
+    .privilege-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .privilege { min-height:125px; padding:14px 12px; color:var(--wine); border:1px solid #ecd0d6; background:rgba(255,253,253,.95); text-align:left; }
+    .privilege span { display:block; margin-bottom:7px; color:var(--rose); font-size:27px; line-height:1; }
+    .privilege b { display:block; font-size:15px; }
+    .privilege small { display:block; margin-top:5px; color:var(--muted); font-size:12px; line-height:1.55; }
+    .privilege.selected { color:#fff; border-color:var(--wine); background:var(--wine); }
+    .privilege.selected span, .privilege.selected small { color:#ffe1e8; }
+    .mail-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .mail { min-width:0; border:1px solid #ead0d6; background:#fffafa; box-shadow:2px 3px 0 #f0dde1; }
+    .mail summary { display:grid; min-height:77px; place-items:center; padding:8px; color:var(--wine); list-style:none; text-align:center; cursor:pointer; }
+    .mail summary::-webkit-details-marker { display:none; }
+    .mail summary::before { content:"✉"; display:block; margin-bottom:4px; color:#d65772; font-size:22px; }
+    .mail summary span { font-size:12px; }
+    .mail p { display:none; margin:0; padding:0 11px 12px; color:#815964; font-size:13px; line-height:1.7; text-align:center; }
+    .mail[open] { grid-column:span 3; background:#fff1f4; }
+    .mail[open] summary { min-height:47px; grid-template-columns:auto 1fr; gap:8px; justify-content:start; padding:10px 13px 2px; text-align:left; }
+    .mail[open] summary::before { margin:0; }
+    .mail[open] p { display:block; }
+    .date-machine { display:grid; grid-template-columns:1fr 82px; gap:10px; min-height:88px; }
+    .date-result { display:grid; align-content:center; padding:13px; color:#7d5260; border:1px solid #e8cbd2; background:#fffafa; font-size:14px; line-height:1.65; }
+    .date-button { color:#fff; border:0; background:var(--rose); font-size:13px; line-height:1.35; }
+    .date-button span { display:block; margin-bottom:5px; font-size:24px; }
+    .wish-choices { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+    .wish-choice { min-height:49px; color:var(--wine); border:1px solid #ecced6; background:#fffafa; font-size:13px; }
+    .wish-choice.selected { color:#fff; border-color:var(--wine); background:var(--wine); }
+    .wish-card { position:relative; min-height:154px; margin-top:12px; padding:20px 17px; overflow:hidden; color:#fffdfd; background:#bd516c; }
+    .wish-card::after { content:""; position:absolute; right:-24px; bottom:-40px; width:116px; height:116px; border:1px solid rgba(255,239,193,.6); border-radius:50%; box-shadow:0 0 0 17px rgba(255,239,193,.11); }
+    .wish-card > * { position:relative; z-index:1; }
+    .wish-card small { display:block; color:#ffe3b4; font-family:"ZCOOL KuaiLe",cursive; font-size:13px; }
+    .wish-card strong { display:block; margin-top:10px; font-size:21px; }
+    .wish-card p { max-width:330px; margin:9px 0 0; color:#fff1f4; font-size:13px; line-height:1.7; }
+    .wish-save { display:inline-block; margin-top:9px; color:#ffe2ac; font-size:11px; }
+    .easter-egg { display:none; margin-top:12px; padding:13px; color:#7d4d5b; border:1px solid #e9b8c5; background:#fff1f4; text-align:center; font-size:13px; line-height:1.65; }
+    .easter-egg.show { display:block; }
+    .certificate { position:relative; overflow:hidden; padding:22px 18px; color:#fff9f4; border:1px solid #e8b06d; background:#8f314b; text-align:center; }
+    .certificate::before, .certificate::after { content:""; position:absolute; width:84px; height:84px; border:1px solid rgba(255,230,170,.5); border-radius:50%; }
+    .certificate::before { top:-47px; left:-34px; }
+    .certificate::after { right:-37px; bottom:-48px; }
+    .certificate > * { position:relative; z-index:1; }
+    .certificate-kicker { margin:0 0 8px; color:#ffe0a4; font-family:"ZCOOL KuaiLe",cursive; font-size:15px; }
+    .certificate h3 { margin:0; font-size:23px; }
+    .certificate p { margin:10px auto 16px; max-width:360px; color:#f8dce3; font-size:13px; line-height:1.7; }
+    .certificate-button { min-height:42px; padding:7px 15px; color:var(--wine); border:0; background:#ffe6ad; font-size:13px; }
+    .certificate-button:disabled { color:#d8a2af; background:#e8bdc7; cursor:default; }
+    .certificate.is-open { background:#a9435e; }
+    .certificate.is-open .certificate-button { color:#fff; background:#6f1e38; }
+    .letter { padding:3px 0 3px 16px; border-left:4px solid var(--rose); }
+    .letter p { margin:0 0 13px; font-size:15px; line-height:2; }
+    .letter .sign { margin:15px 0 0; color:#95606d; font-size:13px; }
+    .footer { margin:27px 0 0; color:#e9bdc9; text-align:center; font-size:12px; }
+    @media (max-width:370px) { .page { padding-right:12px; padding-left:12px; } .hero { padding-right:20px; padding-left:20px; } .memory-grid { gap:7px; } .memory { min-height:137px; } .memory-art { height:78px; } }
+    @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .envelope::after, .envelope-letter, .capsule, .star, .memory { transition:none; } }
+  </style>
+</head>
+<body>
+  <canvas id="sky" aria-hidden="true"></canvas>
+
+  <section class="opening" aria-label="给小悦宝的一封信">
+    <div class="opening-inner">
+      <p class="opening-kicker">小悦宝的专属宠爱通行证</p>
+      <h1 class="opening-title">小悦宝，来收下<br>我攒了好久的偏爱。</h1>
+      <button class="envelope" id="openEnvelope" type="button" aria-label="打开给小悦宝的恋爱游乐园">
+        <span class="envelope-letter"><span><strong>小悦宝的宠爱信</strong><small>拆开以后，今天的甜都归你</small></span></span>
+        <span class="seal" aria-hidden="true">&#9829;</span>
+      </button>
+      <p class="opening-hint">轻轻拆开吧，里面全是给小悦宝的偏心</p>
+    </div>
+  </section>
+
+  <main class="page">
+    <section class="hero">
+      <span class="hero-label" id="heroLabel">今日限定：只宠小悦宝</span>
+      <div class="hero-tools"><button class="sound-toggle" id="soundToggle" type="button" aria-label="开启轻音乐" title="开启轻音乐">&#9834;</button></div>
+      <h1>欢迎来到<br>恋爱游乐园</h1>
+      <p class="hero-copy" id="heroCopy">这里没有必须立刻原谅的规则，只有一份想让你慢慢开心起来的认真。每玩一站，都收下一点偏爱。</p>
+      <div class="sweet-meter" aria-label="今日恋爱甜度一百">
+        <span>&#9829; &#9829; &#9829; &#9829; &#9829;</span><b>今日甜度 100%</b>
+      </div>
+      <div class="passport" aria-live="polite"><span>小悦宝的偏爱收集册</span><strong id="loveCount">0 / 13</strong></div>
+      <div class="daily-gift" id="dailyGift" aria-live="polite"></div>
+    </section>
+
+    <section class="band">
+      <div class="band-head"><span class="number">01</span><div><h2>小悦宝的心动捕捉机</h2><p class="sub">十六秒内接住 10 颗飞来的爱心，把今天的好运都抓进来。</p></div></div>
+      <div class="catch-game" id="catchStage">
+        <div class="catch-score">已接住 <strong id="catchScore">0</strong> / 10</div>
+        <div class="catch-message" id="catchMessage" aria-live="polite">准备好了吗？爱心会从天空掉下来，快用手指接住它们。</div>
+      </div>
+      <button class="catch-start" id="catchStart" type="button">开始接住小悦宝的爱心</button>
+    </section>
+
+    <section class="band">
+      <div class="band-head"><span class="number">02</span><div><h2>小悦宝的甜蜜刮刮卡</h2><p class="sub">用手指把粉色遮住的部分慢慢刮开，里面有一份特别奖励。</p></div></div>
+      <div class="scratch-stage">
+        <div class="scratch-reveal"><div><b>小悦宝今日奖励</b><span>获得一张“被偏爱不用讲理由”通行证。<br>想被哄的时候，直接来找我。</span></div></div>
+        <canvas id="scratchCanvas" aria-label="刮开小悦宝的甜蜜奖励"></canvas>
+      </div>
+      <p class="scratch-help" id="scratchHelp">从卡片上用手指来回擦一擦吧。</p>
+    </section>
+
+    <section class="band">
+      <div class="band-head"><span class="number">03</span><div><h2>长按装满幸福瓶</h2><p class="sub">把按钮按住不放，给小悦宝蓄满今天的甜甜能量。</p></div></div>
+      <div class="hold-stage">
+        <div class="bottle" aria-hidden="true"><div class="bottle-fill" id="bottleFill"></div></div>
+        <button class="hold-button" id="holdButton" type="button">按住不放，装满幸福</button>
+        <p class="hold-status" id="holdStatus" aria-live="polite">装满以后，会有一份小悦宝专属的奖励。</p>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="band-head"><span class="number">04</span><div><h2>小悦宝的花束工坊</h2><p class="sub">把喜欢的花拖进花束里，亲手收下今天的专属偏爱。</p></div></div>
+      <div class="bouquet-stage" id="bouquetStage">
+        <button class="flower-token" type="button" data-flower="0" style="top:25px;left:18px" aria-label="拖动粉色小花">&#10047;</button>
+        <button class="flower-token" type="button" data-flower="1" style="top:44px;right:20px" aria-label="拖动橘色小花">&#10047;</button>
+        <button class="flower-token" type="button" data-flower="2" style="top:111px;left:28px" aria-label="拖动紫粉小花">&#10047;</button>
+        <button class="flower-token" type="button" data-flower="3" style="top:102px;right:38px" aria-label="拖动金色小花">&#10047;</button>
+        <div class="bouquet-target" id="bouquetTarget" aria-label="小悦宝的花束"></div>
+      </div>
+      <p class="bouquet-note" id="bouquetNote" aria-live="polite">按住一朵花，拖到下面的花束里。收下任意三朵就能完成。</p>
+    </section>
+
+    <section class="band">
+      <div class="band-head"><span class="number">05</span><div><h2>小悦宝的甜蜜任务卡</h2><p class="sub">今天不需要懂事，只要负责把三份小偏爱收下。</p></div></div>
+      <div class="task-list" id="taskList">
+        <button class="task" type="button" data-task="0"><span class="task-icon">&#9829;</span><span><b>领取一个云朵抱抱</b><small>抱多久都由小悦宝决定</small></span><span class="task-state">待领取</span></button>
+        <button class="task" type="button" data-task="1"><span class="task-icon">&#10022;</span><span><b>收下一句认真夸奖</b><small>今天也要记得自己很好</small></span><span class="task-state">待领取</span></button>
+        <button class="task" type="button" data-task="2"><span class="task-icon">&#10047;</span><span><b>兑换一次任性资格</b><small>小悦宝今天说了算</small></span><span class="task-state">待领取</span></button>
+      </div>
+      <div class="reply" id="taskReply" aria-live="polite">从第一张任务卡开始吧，今天的偏爱不设上限。</div>
+    </section>
+
+    <section class="band">
+      <div class="band-head"><span class="number">06</span><div><h2>心动扭蛋机</h2><p class="sub">每颗扭蛋里都装着一件想为小悦宝做的小事。</p></div></div>
+      <div class="gacha-stage">
+        <div class="gacha-row">
+          <button class="capsule" type="button" data-capsule="0" aria-label="打开第一颗心动扭蛋">&#9829;</button>
+          <button class="capsule" type="button" data-capsule="1" aria-label="打开第二颗心动扭蛋">&#10022;</button>
+          <button class="capsule" type="button" data-capsule="2" aria-label="打开第三颗心动扭蛋">&#10047;</button>
+        </div>
+        <div class="gacha-result" id="gachaResult" aria-live="polite">挑一颗扭蛋打开吧，今天的好运都偏向小悦宝。</div>
+        <div class="shake-stage">
+          <button class="shake-egg" id="shakeEgg" type="button" aria-label="摇一摇心动彩蛋">&#9829;</button>
+          <div class="shake-copy"><b>摇一摇心动彩蛋</b><p>拿起手机摇一摇，把藏给小悦宝的特别奖励摇出来。摇不动时，也可以轻点彩蛋。</p><span class="shake-count" id="shakeCount">还差 5 次晃动</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="band-head"><span class="number">07</span><div><h2>点亮我们的星图</h2><p class="sub">一颗星是一句心里话，五颗星是一份想陪你很久的心意。</p></div></div>
+      <div class="constellation" aria-label="小悦宝的五颗专属星星">
+        <button class="star" type="button" data-star="0" aria-label="点亮第一颗星">&#10022;</button>
+        <button class="star" type="button" data-star="1" aria-label="点亮第二颗星">&#10022;</button>
+        <button class="star" type="button" data-star="2" aria-label="点亮第三颗星">&#10022;</button>
+        <button class="star" type="button" data-star="3" aria-label="点亮第四颗星">&#10022;</button>
+        <button class="star" type="button" data-star="4" aria-label="点亮第五颗星">&#10022;</button>
+      </div>
+      <p class="star-reply" id="starReply" aria-live="polite">先点亮一颗吧，今晚的星光会替我陪着你。</p>
+    </section>
+
+    <section class="band">
+      <div class="band-head"><span class="number">08</span><div><h2>恋爱拍立得</h2><p class="sub">翻一张，就收下一句想为你留下来的瞬间。</p></div></div>
+      <div class="memory-grid" id="memoryGrid">
+        <button class="memory" type="button" data-memory="0"><span class="memory-art">&#10047;</span><span>第一张<br>给笑起来的你</span></button>
+        <button class="memory" type="button" data-memory="1"><span class="memory-art">&#9829;</span><span>第二张<br>给撒娇的你</span></button>
+        <button class="memory" type="button" data-memory="2"><span class="memory-art">&#10022;</span><span>第三张<br>给认真生活的你</span></button>
+      </div>
+      <div class="memory-reply" id="memoryReply" aria-live="polite">小悦宝的每一种样子，都值得被认真收藏。</div>
+    </section>
+
+    <section class="band">
+      <div class="band-head"><span class="number">09</span><div><h2>小悦宝的特权店</h2><p class="sub">今天的特权不需要积分，点到哪一张就马上生效。</p></div></div>
+      <div class="privilege-grid" id="privilegeGrid">
+        <button class="privilege" type="button" data-privilege="0"><span>&#9829;</span><b>撒娇无限券</b><small>不讲道理也完全可以</small></button>
+        <button class="privilege" type="button" data-privilege="1"><span>&#10022;</span><b>免解释通行证</b><small>难过时不用急着说明白</small></button>
+        <button class="privilege" type="button" data-privilege="2"><span>&#10047;</span><b>小愿望兑换券</b><small>说出来，我记在心上</small></button>
+        <button class="privilege" type="button" data-privilege="3"><span>&#9790;</span><b>专属晚安券</b><small>今晚的温柔优先给你</small></button>
+      </div>
+      <div class="reply" id="privilegeReply" aria-live="polite">这间特权店，永远默认对小悦宝营业。</div>
+    </section>
+
+    <section class="band">
+      <div class="band-head"><span class="number">10</span><div><h2>小悦宝的心意邮局</h2><p class="sub">这里有十二封小信，想拆哪一封都可以。</p></div></div>
+      <div class="mail-grid" aria-label="十二封给小悦宝的小信">
+        <details class="mail"><summary><span>第 1 封</span></summary><p>你的难过值得被认真听见，不需要缩小，也不需要忍着。</p></details>
+        <details class="mail"><summary><span>第 2 封</span></summary><p>小悦宝不用总是懂事，在我这里可以被哄，也可以撒娇。</p></details>
+        <details class="mail"><summary><span>第 3 封</span></summary><p>我最想守护的，是你轻轻松松、开开心心的样子。</p></details>
+        <details class="mail"><summary><span>第 4 封</span></summary><p>你的小情绪不是麻烦，它们都是我该好好了解的你的一部分。</p></details>
+        <details class="mail"><summary><span>第 5 封</span></summary><p>以后有委屈，先来找我。我们可以一起把事情慢慢说开。</p></details>
+        <details class="mail"><summary><span>第 6 封</span></summary><p>小悦宝笑起来的时候，连普通的一天都会变得很珍贵。</p></details>
+        <details class="mail"><summary><span>第 7 封</span></summary><p>我不催你原谅，只想让你知道，想说话的时候我一直都在。</p></details>
+        <details class="mail"><summary><span>第 8 封</span></summary><p>今天的你也值得被偏爱、被夸奖、被放在心上。</p></details>
+        <details class="mail"><summary><span>第 9 封</span></summary><p>我会把解释放后面，把理解放前面，先顾好你的感受。</p></details>
+        <details class="mail"><summary><span>第 10 封</span></summary><p>你可以慢慢消气，我会慢慢把做得不好的地方一点点改好。</p></details>
+        <details class="mail"><summary><span>第 11 封</span></summary><p>谢谢小悦宝愿意收下这些笨拙却很认真的小心意。</p></details>
+        <details class="mail"><summary><span>第 12 封</span></summary><p>喜欢你这件事，我想认真、耐心、很久很久地做下去。</p></details>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="band-head"><span class="number">11</span><div><h2>下一次见面盲盒</h2><p class="sub">点一下，抽一份我想认真兑现的小安排。</p></div></div>
+      <div class="date-machine">
+        <div class="date-result" id="dateResult" aria-live="polite">小悦宝选一份吧。下一次见面，我想把时间空出来，只认真陪你。</div>
+        <button class="date-button" id="dateButton" type="button"><span aria-hidden="true">&#9829;</span>抽一份</button>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="band-head"><span class="number">12</span><div><h2>小悦宝的心愿小卡</h2><p class="sub">选中今天最想要的一份偏爱，生成一张可以截图发给我的小卡片。</p></div></div>
+      <div class="wish-choices" id="wishChoices">
+        <button class="wish-choice" type="button" data-wish="抱抱">想要抱抱</button>
+        <button class="wish-choice" type="button" data-wish="甜品">想吃甜品</button>
+        <button class="wish-choice" type="button" data-wish="散步">想一起散步</button>
+        <button class="wish-choice" type="button" data-wish="安静陪伴">想被安静陪伴</button>
+      </div>
+      <div class="wish-card" id="wishCard"><small>TO：那个很在意小悦宝的人</small><strong id="wishTitle">小悦宝今日的小心愿</strong><p id="wishText">选一份偏爱吧。你选中的心愿，会变成一张只属于你的恋爱小卡。</p><span class="wish-save">长按保存，或直接截图发给我</span></div>
+      <div class="easter-egg" id="easterEgg" aria-live="polite">隐藏路线被小悦宝发现啦：你把温柔、花和星光按顺序收好了。额外奖励是今晚多一份不讲道理的偏爱。</div>
+    </section>
+
+    <section class="band">
+      <div class="band-head"><span class="number">13</span><div><h2>小悦宝的恋爱证书</h2><p class="sub">逛完十三站游乐园，这一份只属于小悦宝的惊喜才会打开。</p></div></div>
+      <div class="certificate" id="certificateCard">
+        <p class="certificate-kicker">XIAO YUE BAO LOVE CERTIFICATE</p>
+        <h3>今日偏爱认证中</h3>
+        <p id="certificateStatus">再收集 13 份偏爱，就能解锁小悦宝的专属恋爱证书。</p>
+        <button class="certificate-button" id="certificateButton" type="button" disabled>还没有集齐偏爱</button>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="letter">
+        <h2>还有一段想认真说的话</h2>
+        <p>小悦宝，对不起，我让你不开心了。你的感受从来不是小事，也不是一句“别生气了”就该翻篇的事。我会先听你说完，认真理解你为什么难过，不急着解释，也不让你一个人消化委屈。</p>
+        <p>你可以慢慢消气，可以先不理我，也可以把所有不开心都告诉我。我会把这次做得不好的地方改掉，也会在之后把你放在更重要的位置。</p>
+        <p class="sign">来自那个很在意小悦宝的人</p>
+      </div>
+    </section>
+    <p class="footer">小悦宝，今天也要被温柔对待。</p>
+  </main>
+
+  <script>
+    const openEnvelope = document.querySelector('#openEnvelope');
+    openEnvelope.addEventListener('click', () => {
+      document.body.classList.add('opened');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      startMusic();
+    });
+
+    const currentHour = new Date().getHours();
+    const nightMode = currentHour >= 18 || currentHour < 6;
+    document.querySelector('#heroLabel').textContent = nightMode ? '晚安限定：只宠小悦宝' : '今日限定：只宠小悦宝';
+    document.querySelector('#heroCopy').textContent = nightMode ? '夜晚不适合让小悦宝一个人消化坏情绪。慢慢逛一逛，把今天的委屈换成一点点甜。' : '今天也没有必须立刻原谅的规则，只有一份想让小悦宝慢慢开心起来的认真。';
+    const dayKey = new Date().toISOString().slice(0, 10);
+    const dailyNotes = nightMode ? [
+      '今晚的晚安彩蛋：小悦宝可以把不开心先放在这里，明天再慢慢处理。',
+      '今晚的晚安彩蛋：愿小悦宝做一个甜甜的梦，醒来还是被偏爱的小朋友。',
+      '今晚的晚安彩蛋：今天辛苦啦，剩下的温柔由我慢慢补给你。'
+    ] : [
+      '今日彩蛋：小悦宝今天也有被夸奖、被抱抱、被认真喜欢的资格。',
+      '今日彩蛋：今天的好运已经寄到小悦宝这里，请记得签收。',
+      '今日彩蛋：不管今天忙不忙，小悦宝都要留一点时间给自己开心。'
+    ];
+    try {
+      const previousVisit = localStorage.getItem('xiaoyuebao-last-visit');
+      localStorage.setItem('xiaoyuebao-last-visit', dayKey);
+      document.querySelector('#dailyGift').textContent = previousVisit === dayKey ? '小悦宝今天又回来啦：重复打开也有重复被偏爱的资格。' : dailyNotes[new Date().getDate() % dailyNotes.length];
+    } catch {
+      document.querySelector('#dailyGift').textContent = dailyNotes[0];
+    }
+
+    let audioContext;
+    let musicTimer;
+    let musicOn = false;
+    function playSoftNote(frequency, delay) {
+      const oscillator = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      oscillator.type = 'sine';
+      oscillator.frequency.value = frequency;
+      gain.gain.setValueAtTime(.0001, audioContext.currentTime + delay);
+      gain.gain.exponentialRampToValueAtTime(.025, audioContext.currentTime + delay + .08);
+      gain.gain.exponentialRampToValueAtTime(.0001, audioContext.currentTime + delay + 1.25);
+      oscillator.connect(gain).connect(audioContext.destination);
+      oscillator.start(audioContext.currentTime + delay);
+      oscillator.stop(audioContext.currentTime + delay + 1.35);
+    }
+    function playMusicPhrase() {
+      [523.25, 659.25, 783.99, 659.25].forEach((note, index) => playSoftNote(note, index * .42));
+    }
+    async function startMusic() {
+      const AudioEngine = window.AudioContext || window.webkitAudioContext;
+      if (!AudioEngine || musicOn) return;
+      if (!audioContext) audioContext = new AudioEngine();
+      if (audioContext.state === 'suspended') await audioContext.resume();
+      musicOn = true;
+      const toggle = document.querySelector('#soundToggle');
+      playMusicPhrase();
+      musicTimer = setInterval(playMusicPhrase, 2100);
+      toggle.innerHTML = '&#9835;';
+      toggle.setAttribute('aria-label', '关闭轻音乐');
+      toggle.title = '关闭轻音乐';
+    }
+    function stopMusic() {
+      clearInterval(musicTimer);
+      musicOn = false;
+      const toggle = document.querySelector('#soundToggle');
+      toggle.innerHTML = '&#9834;';
+      toggle.setAttribute('aria-label', '开启轻音乐');
+      toggle.title = '开启轻音乐';
+    }
+    document.querySelector('#soundToggle').addEventListener('click', () => {
+      if (musicOn) stopMusic(); else startMusic();
+    });
+
+    const loveStations = new Set();
+    const stationTotal = 13;
+    function collectLove(station) {
+      loveStations.add(station);
+      const collected = loveStations.size;
+      document.querySelector('#loveCount').textContent = `${collected} / ${stationTotal}`;
+      const status = document.querySelector('#certificateStatus');
+      const button = document.querySelector('#certificateButton');
+      if (collected === stationTotal) {
+        status.textContent = '十三份偏爱都收好了。小悦宝，专属恋爱证书已经盖好印章，等你亲自打开。';
+        button.disabled = false;
+        button.textContent = '打开专属恋爱证书';
+      } else {
+        status.textContent = `再收集 ${stationTotal - collected} 份偏爱，就能解锁小悦宝的专属恋爱证书。`;
+      }
+    }
+    document.querySelector('#certificateButton').addEventListener('click', () => {
+      const card = document.querySelector('#certificateCard');
+      card.classList.add('is-open');
+      card.querySelector('h3').textContent = '小悦宝，偏爱认证成功';
+      document.querySelector('#certificateStatus').textContent = '认证内容：小悦宝是值得被认真倾听、被耐心拥抱、被放在第一位的特别的人。有效期：很久很久。';
+      document.querySelector('#certificateButton').textContent = '小悦宝已收下认证';
+      window.celebrateLove?.();
+    });
+
+    const secretRoute = [];
+    function recordSecretRoute(step) {
+      if (secretRoute.length < 3) secretRoute.push(step);
+      if (secretRoute.join('|') === 'scratch|bouquet|star') document.querySelector('#easterEgg').classList.add('show');
+    }
+
+    const catchStage = document.querySelector('#catchStage');
+    const catchStart = document.querySelector('#catchStart');
+    let catchScore = 0;
+    let catchActive = false;
+    let catchInterval;
+    let catchTimer;
+    function updateCatchScore() {
+      document.querySelector('#catchScore').textContent = catchScore;
+    }
+    function finishCatch(won) {
+      catchActive = false;
+      clearInterval(catchInterval);
+      clearTimeout(catchTimer);
+      catchStage.querySelectorAll('.falling-heart').forEach((heart) => heart.remove());
+      if (won) {
+        collectLove('catch');
+        document.querySelector('#catchMessage').textContent = '小悦宝太厉害了，十颗爱心全部接住。今天的好运和偏爱，都归你。';
+      } else {
+        document.querySelector('#catchMessage').textContent = `这次接住了 ${catchScore} 颗，再试一次吧，爱心会一直飞向小悦宝。`;
+      }
+      catchStart.textContent = '再玩一局心动捕捉';
+    }
+    function spawnHeart() {
+      if (!catchActive) return;
+      const heart = document.createElement('button');
+      const duration = 2200 + Math.random() * 1200;
+      heart.type = 'button';
+      heart.className = 'falling-heart';
+      heart.innerHTML = '&#9829;';
+      heart.style.left = `${8 + Math.random() * 82}%`;
+      heart.style.setProperty('--fall-duration', `${duration}ms`);
+      heart.addEventListener('click', () => {
+        if (!catchActive) return;
+        heart.remove();
+        catchScore += 1;
+        updateCatchScore();
+        if (catchScore >= 10) finishCatch(true);
+      }, { once: true });
+      catchStage.appendChild(heart);
+      setTimeout(() => heart.remove(), duration + 80);
+    }
+    catchStart.addEventListener('click', () => {
+      clearInterval(catchInterval);
+      clearTimeout(catchTimer);
+      catchStage.querySelectorAll('.falling-heart').forEach((heart) => heart.remove());
+      catchScore = 0;
+      catchActive = true;
+      updateCatchScore();
+      catchStart.textContent = '正在捕捉中...';
+      document.querySelector('#catchMessage').textContent = '爱心已经出发，快接住 10 颗。';
+      spawnHeart();
+      catchInterval = setInterval(spawnHeart, 520);
+      catchTimer = setTimeout(() => finishCatch(catchScore >= 10), 16000);
+    });
+
+    const scratchCanvas = document.querySelector('#scratchCanvas');
+    const scratchContext = scratchCanvas.getContext('2d');
+    let scratchActive = false;
+    let scratchMarks = 0;
+    let scratchFinished = false;
+    function resetScratchCard() {
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      const bounds = scratchCanvas.getBoundingClientRect();
+      scratchCanvas.width = Math.round(bounds.width * ratio);
+      scratchCanvas.height = Math.round(bounds.height * ratio);
+      scratchContext.setTransform(ratio, 0, 0, ratio, 0, 0);
+      scratchContext.globalCompositeOperation = 'source-over';
+      scratchContext.fillStyle = '#df6379';
+      scratchContext.fillRect(0, 0, bounds.width, bounds.height);
+      scratchContext.fillStyle = 'rgba(255,255,255,.28)';
+      for (let x = 18; x < bounds.width; x += 38) {
+        for (let y = 15; y < bounds.height; y += 38) {
+          scratchContext.beginPath();
+          scratchContext.arc(x, y, 1.5, 0, Math.PI * 2);
+          scratchContext.fill();
+        }
+      }
+      scratchContext.fillStyle = '#fff7f8';
+      scratchContext.font = '600 17px "Noto Serif SC", serif';
+      scratchContext.textAlign = 'center';
+      scratchContext.fillText('小悦宝的好运遮住啦', bounds.width / 2, bounds.height / 2);
+      scratchMarks = 0;
+      scratchFinished = false;
+    }
+    function scratchAt(event) {
+      if (scratchFinished) return;
+      const bounds = scratchCanvas.getBoundingClientRect();
+      const x = event.clientX - bounds.left;
+      const y = event.clientY - bounds.top;
+      scratchContext.globalCompositeOperation = 'destination-out';
+      scratchContext.beginPath();
+      scratchContext.arc(x, y, 22, 0, Math.PI * 2);
+      scratchContext.fill();
+      scratchMarks += 1;
+      if (scratchMarks >= 55) {
+        scratchFinished = true;
+        scratchContext.clearRect(0, 0, bounds.width, bounds.height);
+        collectLove('scratch');
+        recordSecretRoute('scratch');
+        document.querySelector('#scratchHelp').textContent = '刮开成功。小悦宝的奖励已经送达，今天可以理直气壮地被偏爱。';
+      }
+    }
+    scratchCanvas.addEventListener('pointerdown', (event) => {
+      event.preventDefault();
+      scratchActive = true;
+      scratchCanvas.setPointerCapture(event.pointerId);
+      scratchAt(event);
+    });
+    scratchCanvas.addEventListener('pointermove', (event) => {
+      if (scratchActive) scratchAt(event);
+    });
+    ['pointerup', 'pointercancel'].forEach((name) => scratchCanvas.addEventListener(name, () => { scratchActive = false; }));
+    resetScratchCard();
+    window.addEventListener('resize', resetScratchCard);
+
+    const holdButton = document.querySelector('#holdButton');
+    const bottleFill = document.querySelector('#bottleFill');
+    let holdFrame;
+    let holdStart = 0;
+    let holdFinished = false;
+    function stopHolding() {
+      if (holdFinished) return;
+      cancelAnimationFrame(holdFrame);
+      bottleFill.style.height = '0%';
+      document.querySelector('#holdStatus').textContent = '差一点点就装满啦，再按住一会儿。';
+    }
+    function fillBottle(now) {
+      const percent = Math.min(1, (now - holdStart) / 2600);
+      bottleFill.style.height = `${percent * 100}%`;
+      if (percent >= 1) {
+        holdFinished = true;
+        holdButton.disabled = true;
+        holdButton.textContent = '幸福瓶装满啦';
+        document.querySelector('#holdStatus').textContent = '装满成功：小悦宝今天的快乐已加满，记得把委屈也交给我一点。';
+        collectLove('hold');
+        return;
+      }
+      holdFrame = requestAnimationFrame(fillBottle);
+    }
+    holdButton.addEventListener('pointerdown', (event) => {
+      if (holdFinished) return;
+      event.preventDefault();
+      holdButton.setPointerCapture(event.pointerId);
+      holdStart = performance.now();
+      document.querySelector('#holdStatus').textContent = '不松手，幸福正在一点点装进瓶子里。';
+      holdFrame = requestAnimationFrame(fillBottle);
+    });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach((name) => holdButton.addEventListener(name, stopHolding));
+    holdButton.addEventListener('contextmenu', (event) => event.preventDefault());
+
+    const bouquetTarget = document.querySelector('#bouquetTarget');
+    const bouquetNote = document.querySelector('#bouquetNote');
+    const placedFlowers = new Set();
+    let activeFlower = null;
+    function moveFlowerGhost(event) {
+      if (!activeFlower) return;
+      activeFlower.ghost.style.left = `${event.clientX - 28}px`;
+      activeFlower.ghost.style.top = `${event.clientY - 28}px`;
+    }
+    document.querySelectorAll('.flower-token').forEach((flower) => {
+      flower.addEventListener('pointerdown', (event) => {
+        if (flower.dataset.placed === 'true') return;
+        event.preventDefault();
+        const ghost = flower.cloneNode(true);
+        ghost.removeAttribute('style');
+        ghost.style.position = 'fixed';
+        ghost.style.zIndex = '20';
+        ghost.style.pointerEvents = 'none';
+        document.body.appendChild(ghost);
+        flower.classList.add('drag-source');
+        activeFlower = { source: flower, ghost };
+        moveFlowerGhost(event);
+      });
+    });
+    document.addEventListener('pointermove', moveFlowerGhost);
+    document.addEventListener('pointerup', (event) => {
+      if (!activeFlower) return;
+      const targetBounds = bouquetTarget.getBoundingClientRect();
+      const insideTarget = event.clientX >= targetBounds.left && event.clientX <= targetBounds.right && event.clientY >= targetBounds.top && event.clientY <= targetBounds.bottom;
+      const { source, ghost } = activeFlower;
+      ghost.remove();
+      source.classList.remove('drag-source');
+      if (insideTarget) {
+        source.dataset.placed = 'true';
+        source.disabled = true;
+        bouquetTarget.appendChild(source);
+        placedFlowers.add(source.dataset.flower);
+        if (placedFlowers.size >= 3) {
+          bouquetTarget.classList.add('ready');
+          bouquetNote.textContent = '小悦宝的花束完成啦：这束花的花语是“你值得一直被温柔对待”。';
+          collectLove('bouquet');
+          recordSecretRoute('bouquet');
+        } else {
+          bouquetNote.textContent = `已经放进 ${placedFlowers.size} 朵花，再挑 ${3 - placedFlowers.size} 朵，花束就完成啦。`;
+        }
+      }
+      activeFlower = null;
+    });
+
+    const taskReplies = [
+      '云朵抱抱已送达：小悦宝可以先什么都不想，只管被好好抱一会儿。',
+      '认真夸奖已送达：你是可爱、细腻、认真，又特别值得被珍惜的小悦宝。',
+      '任性资格已生效：今天的小悦宝有权说“我就想这样”，我负责站在你这边。'
+    ];
+    let completedTasks = 0;
+    document.querySelectorAll('.task').forEach((button) => {
+      button.addEventListener('click', () => {
+        const index = Number(button.dataset.task);
+        if (!button.classList.contains('done')) {
+          button.classList.add('done');
+          button.querySelector('.task-state').textContent = '已收下';
+          completedTasks += 1;
+        }
+        collectLove('task');
+        document.querySelector('#taskReply').textContent = completedTasks === 3 ? '三份偏爱都收好了。今天的任务完成：小悦宝只需要开开心心。' : taskReplies[index];
+      });
+    });
+
+    const gachaNotes = [
+      '扭蛋打开啦：下一次见面，甜品由我准备，小悦宝负责选最想吃的那一口。',
+      '扭蛋打开啦：今天可以把一件不开心的小事交给我，我先听，不反驳。',
+      '扭蛋打开啦：获得一张“随时想你”卡。想我的时候，直接来找我就好。'
+    ];
+    document.querySelectorAll('.capsule').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (button.disabled) return;
+        button.disabled = true;
+        button.textContent = '✓';
+        collectLove('gacha');
+        document.querySelector('#gachaResult').textContent = gachaNotes[Number(button.dataset.capsule)];
+      });
+    });
+
+    const shakeEgg = document.querySelector('#shakeEgg');
+    let shakeCount = 0;
+    let lastShakeAt = 0;
+    let motionListening = false;
+    function completeShakeEgg() {
+      shakeEgg.disabled = true;
+      shakeEgg.classList.remove('shaking');
+      shakeEgg.textContent = '✓';
+      document.querySelector('#shakeCount').textContent = '彩蛋已打开';
+      document.querySelector('#gachaResult').textContent = '小悦宝摇出了隐藏奖励：获得一张“今晚可以被无限哄”的特别通行证。';
+      collectLove('shake');
+    }
+    function addShake() {
+      if (shakeEgg.disabled) return;
+      shakeCount += 1;
+      shakeEgg.classList.add('shaking');
+      setTimeout(() => shakeEgg.classList.remove('shaking'), 380);
+      if (shakeCount >= 5) {
+        completeShakeEgg();
+      } else {
+        document.querySelector('#shakeCount').textContent = `还差 ${5 - shakeCount} 次晃动`;
+      }
+    }
+    function handleMotion(event) {
+      const value = event.accelerationIncludingGravity || event.acceleration;
+      if (!value) return;
+      const force = Math.abs(value.x || 0) + Math.abs(value.y || 0) + Math.abs(value.z || 0);
+      const now = Date.now();
+      if (force > 27 && now - lastShakeAt > 520) {
+        lastShakeAt = now;
+        addShake();
+      }
+    }
+    async function enableMotion() {
+      if (motionListening) return true;
+      try {
+        if (typeof DeviceMotionEvent === 'undefined') return false;
+        if (typeof DeviceMotionEvent.requestPermission === 'function') {
+          const permission = await DeviceMotionEvent.requestPermission();
+          if (permission !== 'granted') return false;
+        }
+        window.addEventListener('devicemotion', handleMotion);
+        motionListening = true;
+        return true;
+      } catch {
+        return false;
+      }
+    }
+    shakeEgg.addEventListener('click', async () => {
+      const available = await enableMotion();
+      if (available) {
+        document.querySelector('#shakeCount').textContent = '现在摇一摇手机吧';
+      } else {
+        addShake();
+      }
+    });
+
+    const starNotes = [
+      '第一颗星：小悦宝的心情不需要先证明合理，才值得被在意。',
+      '第二颗星：以后有委屈，可以把我当成第一个可以找的人。',
+      '第三颗星：我想记住的，是你笑起来时眼睛弯弯的样子。',
+      '第四颗星：我会认真学着先理解你，再解释自己。',
+      '第五颗星：五颗星连成了。今晚，小悦宝是这片星空最亮的那一颗。'
+    ];
+    let litStars = 0;
+    document.querySelectorAll('.star').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (button.disabled) return;
+        button.disabled = true;
+        button.classList.add('lit');
+        litStars += 1;
+        collectLove('star');
+        recordSecretRoute('star');
+        const message = starNotes[Number(button.dataset.star)];
+        document.querySelector('#starReply').textContent = litStars === starNotes.length ? message + ' 我许的愿，是你以后都被认真偏爱。' : message;
+      });
+    });
+
+    const memoryNotes = [
+      '我想收藏的第一张，是小悦宝笑起来的时候。那是我最想守住的好心情。',
+      '小悦宝撒娇的时候，可以尽管黏人一点。被你需要，是一件很幸福的事。',
+      '认真生活的你闪闪发光。辛苦的时候，也要记得有人一直觉得你特别厉害。'
+    ];
+    document.querySelectorAll('.memory').forEach((button) => {
+      button.addEventListener('click', () => {
+        button.classList.add('revealed');
+        collectLove('memory');
+        document.querySelector('#memoryReply').textContent = memoryNotes[Number(button.dataset.memory)];
+      });
+    });
+
+    const privilegeNotes = [
+      '撒娇无限券已生效：今天的小悦宝可以多黏一点、多要一点抱抱，完全合理。',
+      '免解释通行证已生效：不用急着整理好情绪再来找我，乱糟糟地说也没关系。',
+      '小愿望兑换券已生效：把愿望说出来吧，我会认真把它记进“要对小悦宝好”的清单。',
+      '专属晚安券已生效：今晚的最后一份温柔和好梦，先留给小悦宝。'
+    ];
+    document.querySelectorAll('.privilege').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.privilege').forEach((item) => item.classList.remove('selected'));
+        button.classList.add('selected');
+        collectLove('privilege');
+        document.querySelector('#privilegeReply').textContent = privilegeNotes[Number(button.dataset.privilege)];
+      });
+    });
+
+    document.querySelectorAll('.mail').forEach((letter) => {
+      letter.addEventListener('toggle', () => {
+        if (letter.open) collectLove('mail');
+      });
+    });
+
+    const datePlans = [
+      '抽到了：一起去吃小悦宝挑的甜品。我负责赶来、排队和把第一口递给你。',
+      '抽到了：一场不赶时间的散步。路怎么走听你的，手要不要牵也听你的。',
+      '抽到了：一顿小悦宝点菜的晚饭。今天不问为什么，只认真听你说。',
+      '抽到了：一张小愿望兑换券。你说一个愿望，我会把它当成最重要的待办。',
+      '抽到了：一晚专属电影时间。片子由小悦宝决定，零食和拥抱由我准备。'
+    ];
+    let dateIndex = 0;
+    document.querySelector('#dateButton').addEventListener('click', () => {
+      collectLove('date');
+      document.querySelector('#dateResult').textContent = datePlans[dateIndex % datePlans.length];
+      dateIndex += 1;
+    });
+
+    const wishReplies = {
+      '抱抱': '小悦宝想要抱抱。申请已通过，拥抱时长由小悦宝决定。',
+      '甜品': '小悦宝想吃甜品。这个愿望已经被认真记下，下一次见面先安排。',
+      '散步': '小悦宝想一起散步。我们不赶路，慢慢走，把手给我就好。',
+      '安静陪伴': '小悦宝想被安静陪伴。那我就坐在你身边，不催你，也不走开。'
+    };
+    document.querySelectorAll('.wish-choice').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.wish-choice').forEach((item) => item.classList.remove('selected'));
+        button.classList.add('selected');
+        const wish = button.dataset.wish;
+        document.querySelector('#wishTitle').textContent = `小悦宝想要：${wish}`;
+        document.querySelector('#wishText').textContent = wishReplies[wish];
+        collectLove('wish');
+      });
+    });
+  </script>
+  <script>
+    (() => {
+      const canvas = document.querySelector('#sky');
+      const context = canvas.getContext('2d');
+      let width = 0;
+      let height = 0;
+      let stars = [];
+      let petals = [];
+      let celebration = [];
+
+      function resize() {
+        const ratio = Math.min(window.devicePixelRatio || 1, 2);
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = Math.round(width * ratio);
+        canvas.height = Math.round(height * ratio);
+        context.setTransform(ratio, 0, 0, ratio, 0, 0);
+        stars = Array.from({ length: Math.max(90, Math.min(210, Math.floor(width * height / 5200))) }, () => ({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          size: .35 + Math.random() * 1.25,
+          phase: Math.random() * Math.PI * 2,
+          warm: Math.random() > .68
+        }));
+        petals = Array.from({ length: 13 }, () => ({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          size: 3 + Math.random() * 4,
+          speed: .1 + Math.random() * .22,
+          drift: Math.random() * Math.PI * 2
+        }));
+      }
+
+      function draw(time) {
+        context.fillStyle = '#2a1724';
+        context.fillRect(0, 0, width, height);
+        stars.forEach((star) => {
+          const glow = .35 + .55 * Math.sin(time * .0012 + star.phase);
+          context.globalAlpha = glow;
+          context.fillStyle = star.warm ? '#f3c47b' : '#fff7f2';
+          context.beginPath();
+          context.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+          context.fill();
+        });
+        petals.forEach((petal) => {
+          petal.y += petal.speed;
+          petal.x += Math.sin(time * .001 + petal.drift) * .14;
+          if (petal.y > height + 12) { petal.y = -12; petal.x = Math.random() * width; }
+          context.globalAlpha = .35;
+          context.fillStyle = '#ec8ba2';
+          context.beginPath();
+          context.ellipse(petal.x, petal.y, petal.size, petal.size * .56, petal.drift, 0, Math.PI * 2);
+          context.fill();
+        });
+        celebration = celebration.filter((particle) => particle.life > 0);
+        celebration.forEach((particle) => {
+          particle.x += particle.vx;
+          particle.y += particle.vy;
+          particle.vy += .055;
+          particle.life -= .018;
+          context.globalAlpha = Math.max(0, particle.life);
+          context.fillStyle = particle.color;
+          context.beginPath();
+          context.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+          context.fill();
+        });
+        context.globalAlpha = 1;
+        requestAnimationFrame(draw);
+      }
+
+      window.celebrateLove = () => {
+        const colors = ['#ffd88c', '#f39bb1', '#fff5dc', '#e96586'];
+        celebration = Array.from({ length: 120 }, () => ({
+          x: width * (.18 + Math.random() * .64),
+          y: height * (.18 + Math.random() * .28),
+          vx: -3 + Math.random() * 6,
+          vy: -3.8 - Math.random() * 3.2,
+          size: 2 + Math.random() * 3,
+          life: .9 + Math.random() * .6,
+          color: colors[Math.floor(Math.random() * colors.length)]
+        }));
+      };
+
+      resize();
+      window.addEventListener('resize', resize);
+      requestAnimationFrame(draw);
+    })();
+  </script>
+</body>
+</html>
