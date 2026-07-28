@@ -33,7 +33,7 @@
     .envelope-letter small { display:block; margin-top:8px; color:#916b76; font-size:13px; }
     .seal { position:absolute; z-index:4; top:51%; left:50%; display:grid; width:58px; height:58px; place-items:center; color:#fff; border:3px solid #f6ced7; border-radius:50%; background:var(--wine); font-size:28px; transform:translate(-50%,-50%); }
     .opening-hint { margin:21px 0 0; color:#f5d3dc; font-size:14px; }
-    .page { position:relative; z-index:1; display:none; width:min(100%,620px); min-height:100vh; margin:0 auto; padding:18px 16px 48px; background:rgba(255,241,245,.11); }
+    .page { position:relative; z-index:1; display:none; width:min(100%,620px); min-height:100vh; margin:0 auto; padding:18px 16px 48px; background:rgba(255,241,245,.035); }
     body.opened .opening { display:none; }
     body.opened .page { display:block; }
     .hero { position:relative; min-height:325px; overflow:hidden; padding:29px 25px 26px; color:#fff; background:#a83251; box-shadow:0 14px 30px rgba(34,10,23,.24); }
@@ -684,18 +684,25 @@
         const audio = new Audio(note.file);
         activeVoiceAudio = audio;
         let usedFallback = false;
+        let audioStarted = false;
+        let fallbackTimer;
         const fallback = () => {
           if (usedFallback) return;
           usedFallback = true;
+          clearTimeout(fallbackTimer);
+          audio.pause();
           speakVoiceFallback(note.text);
           document.querySelector('#voiceStatus').textContent = `${note.label}送达啦。`;
           button.classList.remove('playing');
         };
         audio.addEventListener('error', fallback, { once: true });
+        audio.addEventListener('playing', () => { audioStarted = true; clearTimeout(fallbackTimer); }, { once: true });
         audio.addEventListener('ended', () => {
+          clearTimeout(fallbackTimer);
           button.classList.remove('playing');
           document.querySelector('#voiceStatus').textContent = `${note.label}已经好好送到小悦宝这里。`;
         }, { once: true });
+        fallbackTimer = setTimeout(() => { if (!audioStarted) fallback(); }, 900);
         audio.play().catch(fallback);
       });
     });
@@ -729,7 +736,7 @@
 
     function saveLoveProgress() {
       try {
-        localStorage.setItem(progressStorageKey, JSON.stringify({ stations: [...loveStations], placements: roomPlacements, theme: roomTheme }));
+        localStorage.setItem(progressStorageKey, JSON.stringify({ stations: [...loveStations] }));
       } catch {}
     }
     function applyRoomTheme(theme) {
@@ -768,19 +775,6 @@
         .filter((candidate) => !usedSlots.has(candidate.index))
         .sort((a, b) => a.distance - b.distance);
       return choices.length ? choices[0].index : null;
-    }
-    function normaliseRoomPlacements() {
-      const usedSlots = new Set();
-      Object.keys(roomPlacements).forEach((key) => {
-        const placement = roomPlacements[key];
-        let slot = Number.isInteger(placement?.slot) && placement.slot >= 0 && placement.slot < roomSlots.length && !usedSlots.has(placement.slot) ? placement.slot : null;
-        if (slot === null && Number.isFinite(placement?.x) && Number.isFinite(placement?.y)) slot = nearestRoomSlot(placement.x, placement.y, usedSlots);
-        if (slot === null) delete roomPlacements[key];
-        else {
-          roomPlacements[key] = { slot };
-          usedSlots.add(slot);
-        }
-      });
     }
     function createRoomButton(className, key, placement) {
       const reward = roomRewards[key];
@@ -865,15 +859,8 @@
     function restoreLoveProgress() {
       try {
         const saved = JSON.parse(localStorage.getItem(progressStorageKey) || '{}');
-        if (['rose', 'night', 'cream'].includes(saved.theme)) roomTheme = saved.theme;
         (Array.isArray(saved.stations) ? saved.stations : []).forEach((key) => { if (roomRewards[key]) loveStations.add(key); });
-        if (saved.placements && typeof saved.placements === 'object') {
-          Object.entries(saved.placements).forEach(([key, placement]) => {
-            if (roomRewards[key] && loveStations.has(key) && placement && typeof placement === 'object') roomPlacements[key] = placement;
-          });
-        }
       } catch {}
-      normaliseRoomPlacements();
       applyRoomTheme(roomTheme);
       updateCertificate();
       renderCollectionRoom();
@@ -1419,6 +1406,8 @@
       let stars = [];
       let petals = [];
       let celebration = [];
+      let meteors = [];
+      let nextMeteorAt = 0;
 
       function resize() {
         const ratio = Math.min(window.devicePixelRatio || 1, 2);
@@ -1444,14 +1433,45 @@
       }
 
       function draw(time) {
-        context.fillStyle = '#2a1724';
+        context.fillStyle = '#211720';
         context.fillRect(0, 0, width, height);
+        const riverY = height * .5 + Math.sin(time * .00022) * height * .07;
+        for (let index = 0; index < 58; index += 1) {
+          const x = (index * 83 + time * .008) % (width + 120) - 60;
+          const y = riverY + Math.sin(index * 1.71 + time * .00035) * 42 + (index % 4) * 8;
+          context.globalAlpha = .08 + (index % 5) * .02;
+          context.fillStyle = index % 3 ? '#f3b5c4' : '#f5d181';
+          context.beginPath();
+          context.arc(x, y, 1 + (index % 3) * .45, 0, Math.PI * 2);
+          context.fill();
+        }
         stars.forEach((star) => {
           const glow = .35 + .55 * Math.sin(time * .0012 + star.phase);
           context.globalAlpha = glow;
           context.fillStyle = star.warm ? '#f3c47b' : '#fff7f2';
           context.beginPath();
           context.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+          context.fill();
+        });
+        if (time > nextMeteorAt) {
+          meteors.push({ x: width + 35, y: height * (.08 + Math.random() * .48), vx: -(5 + Math.random() * 2), vy: 2.2 + Math.random() * 1.2, life: 1 });
+          nextMeteorAt = time + 3300 + Math.random() * 4200;
+        }
+        meteors = meteors.filter((meteor) => meteor.life > 0 && meteor.x > -120 && meteor.y < height + 100);
+        meteors.forEach((meteor) => {
+          meteor.x += meteor.vx;
+          meteor.y += meteor.vy;
+          meteor.life -= .018;
+          context.globalAlpha = Math.max(0, meteor.life) * .82;
+          context.strokeStyle = '#ffe6a5';
+          context.lineWidth = 1.4;
+          context.beginPath();
+          context.moveTo(meteor.x, meteor.y);
+          context.lineTo(meteor.x - meteor.vx * 10, meteor.y - meteor.vy * 10);
+          context.stroke();
+          context.fillStyle = '#fff8df';
+          context.beginPath();
+          context.arc(meteor.x, meteor.y, 2, 0, Math.PI * 2);
           context.fill();
         });
         petals.forEach((petal) => {
