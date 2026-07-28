@@ -52,6 +52,26 @@
     .passport { display:flex; align-items:center; gap:9px; width:max-content; margin-top:18px; padding:8px 11px; color:#fff0f4; border:1px solid rgba(255,255,255,.44); background:rgba(91,24,48,.25); font-size:12px; }
     .passport strong { color:#ffe7a9; font-family:"ZCOOL KuaiLe",cursive; font-size:16px; font-weight:400; }
     .daily-gift { max-width:335px; margin:13px 0 0; padding:9px 11px; color:#ffe5eb; border-left:2px solid #ffd58d; background:rgba(102,25,50,.26); font-size:12px; line-height:1.65; }
+    .collection-room { position:relative; overflow:hidden; min-height:246px; border:1px solid #ecc2cd; background:#fff9fb; }
+    .collection-room::before { content:""; position:absolute; inset:0 0 58px; opacity:.55; background-image:radial-gradient(circle, #efb2c0 0 1px, transparent 1.7px), linear-gradient(90deg, transparent 49%, #f4dce2 50%, transparent 51%); background-size:31px 31px, 22px 22px; pointer-events:none; }
+    .room-window { position:absolute; top:15px; right:18px; width:66px; height:78px; border:5px solid #de8da1; background:#4a2b45; box-shadow:inset 0 0 0 3px #fff5f7; }
+    .room-window::after { content:"✦  ✦"; position:absolute; top:18px; left:10px; color:#ffe5a5; white-space:pre; font-size:14px; }
+    .room-shelf { position:absolute; right:12px; bottom:57px; left:12px; height:12px; background:#c86a80; box-shadow:0 8px 0 #a84662; }
+    .room-scene { position:relative; z-index:1; height:188px; overflow:hidden; touch-action:none; }
+    .room-copy { position:absolute; top:18px; left:17px; max-width:190px; color:#874e60; font-size:13px; line-height:1.65; }
+    .room-copy b { display:block; color:var(--wine); font-family:"ZCOOL KuaiLe",cursive; font-size:17px; font-weight:400; }
+    .room-item { position:absolute; z-index:2; display:grid; width:48px; height:48px; place-items:center; padding:0; color:#a54460; border:1px solid #e9b1c0; border-radius:50%; background:#fffdfd; box-shadow:0 4px 0 #edcbd4; font-size:25px; touch-action:none; }
+    .room-item.dragging { opacity:.25; }
+    .room-inventory { position:relative; z-index:2; display:flex; min-height:58px; gap:7px; align-items:center; padding:8px 10px; overflow-x:auto; border-top:1px solid #ecd1d7; background:#fff1f4; }
+    .room-inventory::before { content:"收集到的偏爱"; flex:0 0 auto; color:#9b6070; font-size:11px; }
+    .inventory-item { display:grid; flex:0 0 auto; width:38px; height:38px; place-items:center; padding:0; color:#c2526c; border:1px solid #e9adbd; border-radius:50%; background:#fffdfd; font-size:20px; touch-action:none; }
+    .inventory-empty { color:#a8717e; font-size:12px; }
+    .room-note { min-height:42px; margin:10px 0 0; padding:10px; color:#7d5060; background:#fffafa; text-align:center; font-size:13px; line-height:1.6; }
+    .room-story { display:none; margin-top:10px; padding:15px 14px 13px; color:#fff8f8; border-left:3px solid #ffd88c; background:#8e3b59; animation:story-arrive .45s ease both; }
+    .room-story.show { display:block; }
+    .room-story b { display:block; margin-bottom:5px; color:#ffe2a1; font-family:"ZCOOL KuaiLe",cursive; font-size:17px; font-weight:400; }
+    .room-story p { margin:0; font-size:13px; line-height:1.75; }
+    @keyframes story-arrive { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
     .band { padding:27px 3px; border-bottom:1px dashed rgba(239,207,216,.72); }
     .band-head { display:flex; gap:13px; align-items:flex-start; margin-bottom:17px; }
     .number { display:grid; flex:0 0 auto; width:31px; height:31px; place-items:center; color:#fff; border-radius:50%; background:var(--rose); font-family:"ZCOOL KuaiLe",cursive; font-size:15px; }
@@ -75,6 +95,7 @@
     .catch-start { display:block; width:100%; min-height:44px; margin-top:10px; color:#fff; border:0; background:var(--rose); }
     .falling-heart { position:absolute; z-index:1; top:-42px; width:39px; height:39px; padding:0; color:#fff; border:0; border-radius:50%; background:#d75b76; box-shadow:0 5px 0 #b83d5a; font-size:21px; animation:heart-fall var(--fall-duration) linear forwards; }
     .falling-heart:nth-child(3n) { color:#fff8df; background:#eeb172; box-shadow:0 5px 0 #ce8956; }
+    .falling-heart.hazard { color:#fff; background:#9ba3ae; box-shadow:0 5px 0 #747c87; }
     @keyframes heart-fall { to { transform:translateY(310px) rotate(240deg); } }
     .scratch-stage { position:relative; height:222px; overflow:hidden; border:1px solid #eac2cd; background:#fffdfd; }
     .scratch-reveal { display:grid; height:100%; place-items:center; padding:24px; color:var(--wine); background:#ffe8ee; text-align:center; }
@@ -218,6 +239,8 @@
     .memory-result { min-height:56px; margin:10px 0 0; padding:11px; color:#7d5060; background:#fffafa; text-align:center; font-size:13px; line-height:1.6; }
     .memory-restart { width:100%; min-height:42px; margin-top:9px; color:var(--wine); border:1px solid #e2a8b7; background:#fff5f7; }
     .tea-game { padding:16px 13px; border:1px solid #e8c3cd; background:#fffafa; }
+    .tea-order { margin:0 0 10px; padding:9px 10px; color:#885464; border-left:3px solid #e1a26f; background:#fff3df; font-size:12px; line-height:1.6; }
+    .tea-order b { color:#b74e6a; }
     .tea-ingredients { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
     .tea-ingredient { min-height:56px; color:var(--wine); border:1px solid #efcbd4; background:#fffdfd; font-size:13px; }
     .tea-ingredient span { display:block; margin-bottom:3px; color:#d85b76; font-size:20px; }
@@ -279,8 +302,22 @@
       <div class="daily-gift" id="dailyGift" aria-live="polite"></div>
     </section>
 
+    <section class="band" aria-labelledby="roomTitle">
+      <div class="band-head"><span class="number">00</span><div><h2 id="roomTitle">小悦宝的甜蜜收藏屋</h2><p class="sub">每完成一站，就会收到一件偏爱小物。把它拖进小屋，慢慢布置成只属于小悦宝的秘密角落。</p></div></div>
+      <div class="collection-room">
+        <div class="room-scene" id="roomScene" aria-label="小悦宝的甜蜜收藏屋，可以把小物件拖进来布置">
+          <div class="room-window" aria-hidden="true"></div>
+          <div class="room-copy"><b>只属于小悦宝的小屋</b><span>把收集到的偏爱，摆在你喜欢的位置吧。</span></div>
+          <div class="room-shelf" aria-hidden="true"></div>
+        </div>
+        <div class="room-inventory" id="roomInventory" aria-live="polite"><span class="inventory-empty">完成游乐园里的任意一站，就会有新礼物送到这里。</span></div>
+      </div>
+      <div class="room-note" id="roomNote" aria-live="polite">先去收下一份偏爱吧，收藏屋会替小悦宝好好保管。</div>
+      <div class="room-story" id="roomStory" aria-live="polite"><b>解锁：小周宝的晚安小剧情</b><p>夜深的时候，收藏屋的窗边会亮起一盏小灯。小周宝把今天攒到的抱抱、好运和花香都放在这里，只等小悦宝来拿。你只要说一句“我来啦”，就能得到一整晚不打烊的偏爱。</p></div>
+    </section>
+
     <section class="band">
-      <div class="band-head"><span class="number">01</span><div><h2>小悦宝的云朵接心机</h2><p class="sub">用手指拖动云朵托盘，接住爱心和会加分的幸运星。</p></div></div>
+      <div class="band-head"><span class="number">01</span><div><h2>小悦宝的云朵接心机</h2><p class="sub">用手指拖动云朵托盘，接住爱心和会加分的幸运星，避开会打乱甜度的灰云。</p></div></div>
       <div class="catch-game" id="catchStage">
         <div class="catch-score">甜度 <strong id="catchScore">0</strong> / 12</div>
         <div class="catch-combo" id="catchCombo">连击 x 0</div>
@@ -309,8 +346,9 @@
     </div>
 
     <section class="band">
-      <div class="band-head"><span class="number">03</span><div><h2>小悦宝的奶茶工坊</h2><p class="sub">先选三种喜欢的配料，再按住杯子左右甩一甩，把甜度搅匀。</p></div></div>
+      <div class="band-head"><span class="number">03</span><div><h2>小悦宝的奶茶工坊</h2><p class="sub">按订单顺序加入三种配料，再按住杯子左右甩一甩，把甜度搅匀。</p></div></div>
       <div class="tea-game">
+        <p class="tea-order" id="teaOrder" aria-live="polite"></p>
         <div class="tea-ingredients" id="teaIngredients">
           <button class="tea-ingredient" type="button" data-ingredient="milk"><span>&#9679;</span>鲜奶</button>
           <button class="tea-ingredient" type="button" data-ingredient="pearls"><span>&#9829;</span>珍珠</button>
@@ -532,10 +570,33 @@
       if (musicOn) stopMusic(); else startMusic();
     });
 
-    const loveStations = new Set();
     const stationTotal = 13;
-    function collectLove(station) {
-      loveStations.add(station);
+    const roomRewards = {
+      catch: { icon: '☁', name: '云朵托盘' },
+      scratch: { icon: '✦', name: '好运星签' },
+      hold: { icon: '🥤', name: '三倍甜奶茶' },
+      bouquet: { icon: '✿', name: '专属小花束' },
+      task: { icon: '♥', name: '云朵抱抱' },
+      gacha: { icon: '◉', name: '心动扭蛋' },
+      shake: { icon: '🎀', name: '摇出的小彩蛋' },
+      star: { icon: '✧', name: '星图碎片' },
+      memory: { icon: '▣', name: '恋爱拍立得' },
+      privilege: { icon: '♔', name: '偏爱特权券' },
+      mail: { icon: '✉', name: '心意小信' },
+      date: { icon: '⌁', name: '见面盲盒' },
+      wish: { icon: '☾', name: '心愿小卡' }
+    };
+    const loveStations = new Set();
+    const roomPlacements = {};
+    const progressStorageKey = 'xiaoyuebao-love-progress-v2';
+    let roomDrag = null;
+
+    function saveLoveProgress() {
+      try {
+        localStorage.setItem(progressStorageKey, JSON.stringify({ stations: [...loveStations], placements: roomPlacements }));
+      } catch {}
+    }
+    function updateCertificate() {
       const collected = loveStations.size;
       document.querySelector('#loveCount').textContent = `${collected} / ${stationTotal}`;
       const status = document.querySelector('#certificateStatus');
@@ -548,6 +609,113 @@
         status.textContent = `再收集 ${stationTotal - collected} 份偏爱，就能解锁小悦宝的专属恋爱证书。`;
       }
     }
+    function updateRoomNote(newReward) {
+      const placed = Object.keys(roomPlacements).length;
+      const note = document.querySelector('#roomNote');
+      if (newReward) {
+        note.textContent = `叮咚，${roomRewards[newReward].name} 已送到收藏屋。拖进去摆好，让小悦宝的秘密角落再多一点甜。`;
+      } else if (placed >= 5) {
+        note.textContent = `小悦宝已经布置了 ${placed} 件偏爱，窗边的小灯被点亮啦。`;
+      } else if (loveStations.size) {
+        note.textContent = `已经收到 ${loveStations.size} 件偏爱，拖动下方小物件，把收藏屋布置成喜欢的样子吧。`;
+      }
+      document.querySelector('#roomStory').classList.toggle('show', placed >= 5);
+    }
+    function createRoomButton(className, key, placement) {
+      const reward = roomRewards[key];
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = className;
+      button.dataset.roomKey = key;
+      button.textContent = reward.icon;
+      button.title = reward.name;
+      button.setAttribute('aria-label', `拖动${reward.name}${placement ? '，可以重新摆放' : '到收藏屋'}`);
+      if (placement) {
+        button.style.left = `${placement.x}%`;
+        button.style.top = `${placement.y}%`;
+      }
+      button.addEventListener('pointerdown', startRoomDrag);
+      return button;
+    }
+    function renderCollectionRoom() {
+      const scene = document.querySelector('#roomScene');
+      scene.querySelectorAll('.room-item').forEach((item) => item.remove());
+      Object.entries(roomPlacements).forEach(([key, placement]) => {
+        if (roomRewards[key]) scene.appendChild(createRoomButton('room-item', key, placement));
+      });
+      const inventory = document.querySelector('#roomInventory');
+      inventory.replaceChildren();
+      const unplaced = [...loveStations].filter((key) => roomRewards[key] && !roomPlacements[key]);
+      if (!unplaced.length) {
+        const empty = document.createElement('span');
+        empty.className = 'inventory-empty';
+        empty.textContent = loveStations.size ? '小礼物都被小悦宝摆好啦。按住屋里的物件可以重新布置。' : '完成游乐园里的任意一站，就会有新礼物送到这里。';
+        inventory.appendChild(empty);
+      } else {
+        unplaced.forEach((key) => inventory.appendChild(createRoomButton('inventory-item', key)));
+      }
+    }
+    function startRoomDrag(event) {
+      event.preventDefault();
+      const source = event.currentTarget;
+      const ghost = source.cloneNode(true);
+      ghost.removeAttribute('style');
+      ghost.style.position = 'fixed';
+      ghost.style.zIndex = '30';
+      ghost.style.pointerEvents = 'none';
+      ghost.style.left = `${event.clientX - 24}px`;
+      ghost.style.top = `${event.clientY - 24}px`;
+      document.body.appendChild(ghost);
+      source.classList.add('dragging');
+      roomDrag = { key: source.dataset.roomKey, source, ghost };
+    }
+    document.addEventListener('pointermove', (event) => {
+      if (!roomDrag) return;
+      roomDrag.ghost.style.left = `${event.clientX - 24}px`;
+      roomDrag.ghost.style.top = `${event.clientY - 24}px`;
+    });
+    document.addEventListener('pointerup', (event) => {
+      if (!roomDrag) return;
+      const scene = document.querySelector('#roomScene');
+      const bounds = scene.getBoundingClientRect();
+      const inside = event.clientX >= bounds.left && event.clientX <= bounds.right && event.clientY >= bounds.top && event.clientY <= bounds.bottom;
+      const { key, source, ghost } = roomDrag;
+      ghost.remove();
+      source.classList.remove('dragging');
+      if (inside) {
+        const x = Math.max(24, Math.min(bounds.width - 24, event.clientX - bounds.left));
+        const y = Math.max(24, Math.min(bounds.height - 24, event.clientY - bounds.top));
+        roomPlacements[key] = { x: Math.round(x / bounds.width * 1000) / 10, y: Math.round(y / bounds.height * 1000) / 10 };
+        saveLoveProgress();
+        renderCollectionRoom();
+        updateRoomNote();
+      }
+      roomDrag = null;
+    });
+    function restoreLoveProgress() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(progressStorageKey) || '{}');
+        (Array.isArray(saved.stations) ? saved.stations : []).forEach((key) => { if (roomRewards[key]) loveStations.add(key); });
+        if (saved.placements && typeof saved.placements === 'object') {
+          Object.entries(saved.placements).forEach(([key, placement]) => {
+            if (roomRewards[key] && loveStations.has(key) && Number.isFinite(placement.x) && Number.isFinite(placement.y)) roomPlacements[key] = placement;
+          });
+        }
+      } catch {}
+      updateCertificate();
+      renderCollectionRoom();
+      updateRoomNote();
+    }
+    function collectLove(station) {
+      if (!roomRewards[station]) return;
+      const isNew = !loveStations.has(station);
+      loveStations.add(station);
+      saveLoveProgress();
+      updateCertificate();
+      renderCollectionRoom();
+      updateRoomNote(isNew ? station : null);
+    }
+    restoreLoveProgress();
     document.querySelector('#certificateButton').addEventListener('click', () => {
       const card = document.querySelector('#certificateCard');
       card.classList.add('is-open');
@@ -599,13 +767,14 @@
       catchStart.textContent = '再玩一局云朵接心';
     }
     function spawnCatchPiece(bounds) {
-      const lucky = Math.random() > .75;
+      const hazard = Math.random() < .16;
+      const lucky = !hazard && Math.random() > .72;
       const node = document.createElement('span');
-      node.className = 'falling-heart';
-      node.innerHTML = lucky ? '&#10022;' : '&#9829;';
+      node.className = `falling-heart${hazard ? ' hazard' : ''}`;
+      node.innerHTML = hazard ? '&#9729;' : lucky ? '&#10022;' : '&#9829;';
       if (lucky) node.style.background = '#e8aa55';
       catchStage.appendChild(node);
-      catchPieces.push({ node, x: 8 + Math.random() * (bounds.width - 52), y: 8, speed: 1.7 + Math.random() * 1.15, value: lucky ? 2 : 1 });
+      catchPieces.push({ node, x: 8 + Math.random() * (bounds.width - 52), y: 8, speed: 1.7 + Math.random() * 1.15, value: hazard ? -2 : lucky ? 2 : 1 });
     }
     function runCatchGame(now) {
       if (!catchActive) return;
@@ -620,13 +789,13 @@
         const caught = piece.y > bounds.height - 94 && piece.y < bounds.height - 39 && piece.x + 34 > catchBasketX - 50 && piece.x < catchBasketX + 50;
         if (caught) {
           piece.node.remove();
-          catchScore += piece.value;
-          catchComboCount += 1;
+          catchScore = Math.max(0, catchScore + piece.value);
+          catchComboCount = piece.value < 0 ? 0 : catchComboCount + 1;
           updateCatchScore();
           catchCombo.textContent = `连击 x ${catchComboCount}`;
           catchCombo.classList.remove('show');
           requestAnimationFrame(() => catchCombo.classList.add('show'));
-          document.querySelector('#catchMessage').textContent = piece.value === 2 ? '幸运星被小悦宝接住啦，甜度加 2。' : '稳稳接住一颗爱心，继续左右移动托盘。';
+          document.querySelector('#catchMessage').textContent = piece.value < 0 ? '灰云被接住啦，甜度减 2，别慌，下一颗爱心马上补回来。' : piece.value === 2 ? '幸运星被小悦宝接住啦，甜度加 2。' : '稳稳接住一颗爱心，继续左右移动托盘。';
           if (catchScore >= 12) finishCatch(true);
           return false;
         }
@@ -659,7 +828,7 @@
       updateCatchScore();
       catchCombo.textContent = '连击 x 0';
       catchStart.textContent = '挑战进行中...';
-      document.querySelector('#catchMessage').textContent = '按住舞台空白处，左右拖动云朵托盘。接到幸运星会加倍。';
+      document.querySelector('#catchMessage').textContent = '按住舞台空白处左右拖动托盘。幸运星加倍，灰云会扣甜度。';
       catchSpawnAt = 0;
       catchEndsAt = performance.now() + 18000;
       catchFrame = requestAnimationFrame(runCatchGame);
@@ -738,6 +907,9 @@
     const teaMixZone = document.querySelector('#teaMixZone');
     const teaCup = document.querySelector('#teaCup');
     const teaAdded = new Set();
+    const teaNames = { milk: '鲜奶', pearls: '珍珠', cream: '奶盖' };
+    const teaRecipe = ['milk', 'pearls', 'cream'].sort(() => Math.random() - .5);
+    let teaOrder = [];
     let teaMixing = false;
     let teaLastX = 0;
     let teaLastDirection = 0;
@@ -748,6 +920,14 @@
       document.querySelector('#teaPearls').style.height = teaAdded.has('pearls') ? '53px' : '0';
       document.querySelector('#teaCream').style.height = teaAdded.has('cream') ? '25px' : '0';
     }
+    function resetTeaOrder(message) {
+      teaOrder = [];
+      teaAdded.clear();
+      document.querySelectorAll('.tea-ingredient').forEach((item) => item.classList.remove('added'));
+      updateTeaLayers();
+      document.querySelector('#teaStatus').textContent = message;
+    }
+    document.querySelector('#teaOrder').innerHTML = `<b>今日点单：</b>${teaRecipe.map((item, index) => `${index + 1}. ${teaNames[item]}`).join('  →  ')}`;
     function finishTea() {
       teaFinished = true;
       teaCup.style.transform = 'translateX(-50%) rotate(0deg)';
@@ -758,14 +938,20 @@
     document.querySelectorAll('.tea-ingredient').forEach((button) => {
       button.addEventListener('click', () => {
         if (teaFinished) return;
-        teaAdded.add(button.dataset.ingredient);
+        const ingredient = button.dataset.ingredient;
+        if (ingredient !== teaRecipe[teaOrder.length]) {
+          resetTeaOrder(`差一点点，今天的小悦宝点的是另一种顺序。订单没有扣钱，重新试一次就好。`);
+          return;
+        }
+        teaOrder.push(ingredient);
+        teaAdded.add(ingredient);
         button.classList.add('added');
         updateTeaLayers();
-        if (teaAdded.size === 3) {
+        if (teaOrder.length === teaRecipe.length) {
           document.querySelector('#teaSwing').textContent = '配料齐啦，按住杯子左右甩 6 下，把甜度搅匀。';
           document.querySelector('#teaStatus').textContent = '现在轮到小悦宝亲手调出今天的专属甜度。';
         } else {
-          document.querySelector('#teaStatus').textContent = `已经加好 ${teaAdded.size} 种配料，再挑 ${3 - teaAdded.size} 种。`;
+          document.querySelector('#teaStatus').textContent = `订单完成 ${teaOrder.length} / 3，下一步加 ${teaNames[teaRecipe[teaOrder.length]]}。`;
         }
       });
     });
@@ -798,6 +984,11 @@
     const bouquetTarget = document.querySelector('#bouquetTarget');
     const bouquetNote = document.querySelector('#bouquetNote');
     const placedFlowers = new Set();
+    const flowerNames = { 0: '粉色小花', 1: '橘色小花', 2: '紫粉小花', 3: '金色小花' };
+    const bouquetRecipe = ['0', '1', '2', '3'].sort(() => Math.random() - .5).slice(0, 3);
+    const wrapNames = { rose: '樱花粉', cream: '奶油金', lilac: '葡萄紫' };
+    const bouquetWrap = ['rose', 'cream', 'lilac'][Math.floor(Math.random() * 3)];
+    bouquetNote.textContent = `今日花束订单：按顺序拖进 ${bouquetRecipe.map((item) => flowerNames[item]).join('、')}，最后选 ${wrapNames[bouquetWrap]} 包装纸。`;
     let activeFlower = null;
     function moveFlowerGhost(event) {
       if (!activeFlower) return;
@@ -828,6 +1019,11 @@
       ghost.remove();
       source.classList.remove('drag-source');
       if (insideTarget) {
+        if (source.dataset.flower !== bouquetRecipe[placedFlowers.size]) {
+          bouquetNote.textContent = `这朵花也很漂亮，不过今天的订单下一朵是${flowerNames[bouquetRecipe[placedFlowers.size]]}。慢慢挑，不着急。`;
+          activeFlower = null;
+          return;
+        }
         source.dataset.placed = 'true';
         source.disabled = true;
         bouquetTarget.appendChild(source);
@@ -835,15 +1031,19 @@
         if (placedFlowers.size >= 3) {
           bouquetTarget.classList.add('ready');
           document.querySelector('#wrapChoices').classList.add('show');
-          bouquetNote.textContent = '花朵都放好啦。再挑一张包装纸，把花束变成小悦宝的专属款。';
+          bouquetNote.textContent = `花朵都放好啦。最后一步：选一张${wrapNames[bouquetWrap]}包装纸，把花束变成小悦宝的专属款。`;
         } else {
-          bouquetNote.textContent = `已经放进 ${placedFlowers.size} 朵花，再挑 ${3 - placedFlowers.size} 朵，花束就完成啦。`;
+          bouquetNote.textContent = `已经放进 ${placedFlowers.size} 朵花，下一朵请挑${flowerNames[bouquetRecipe[placedFlowers.size]]}。`;
         }
       }
       activeFlower = null;
     });
     document.querySelectorAll('.wrap-choice').forEach((button) => {
       button.addEventListener('click', () => {
+        if (button.dataset.wrap !== bouquetWrap) {
+          bouquetNote.textContent = `这个颜色也很好看，不过今天的花束想穿${wrapNames[bouquetWrap]}。再找找看吧。`;
+          return;
+        }
         document.querySelectorAll('.wrap-choice').forEach((item) => item.classList.remove('selected'));
         button.classList.add('selected');
         bouquetTarget.dataset.wrap = button.dataset.wrap;
