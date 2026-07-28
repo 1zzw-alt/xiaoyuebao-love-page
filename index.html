@@ -52,7 +52,31 @@
     .passport { display:flex; align-items:center; gap:9px; width:max-content; margin-top:18px; padding:8px 11px; color:#fff0f4; border:1px solid rgba(255,255,255,.44); background:rgba(91,24,48,.25); font-size:12px; }
     .passport strong { color:#ffe7a9; font-family:"ZCOOL KuaiLe",cursive; font-size:16px; font-weight:400; }
     .daily-gift { max-width:335px; margin:13px 0 0; padding:9px 11px; color:#ffe5eb; border-left:2px solid #ffd58d; background:rgba(102,25,50,.26); font-size:12px; line-height:1.65; }
+    .mood-stage { padding:16px; border:1px solid #e8c4cf; background:#fffafa; }
+    .mood-choices { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+    .mood-choice { min-height:54px; padding:8px; color:#8d5365; border:1px solid #edcad3; background:#fffdfd; font-size:13px; }
+    .mood-choice span { margin-right:5px; font-size:18px; }
+    .mood-choice.selected { color:#fff; border-color:#bf516c; background:#c75571; }
+    .mood-bottle-row { display:flex; gap:15px; align-items:center; margin-top:13px; padding:12px; background:#fff0f4; }
+    .mood-bottle { display:grid; flex:0 0 auto; width:68px; height:84px; place-items:center; color:#ffeeb6; border:4px solid #c85873; border-top-width:10px; border-radius:17px 17px 27px 27px; background:#dd7890; font-size:30px; }
+    .mood-bottle.toss { animation:bottle-toss .7s ease; }
+    @keyframes bottle-toss { 0%,100% { transform:rotate(0); } 25% { transform:translateY(-7px) rotate(-11deg); } 56% { transform:translateY(2px) rotate(13deg); } }
+    .mood-throw { min-height:42px; padding:8px 13px; color:#fff; border:0; background:#9b3855; font-size:13px; }
+    .mood-reply { min-height:58px; margin:11px 0 0; padding:12px; color:#7a4e5e; border-left:3px solid #df6379; background:#fff4f6; font-size:13px; line-height:1.7; }
+    .voice-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .voice-note { min-height:112px; padding:9px 6px; color:#884f60; border:1px solid #edc5cf; background:#fffdfd; font-size:12px; line-height:1.45; }
+    .voice-note span { display:grid; width:36px; height:36px; margin:0 auto 7px; place-items:center; color:#fff; border-radius:50%; background:#c85873; font-size:16px; }
+    .voice-note.playing { color:#fff; border-color:#92344f; background:#a9425d; }
+    .voice-note.playing span { color:#9b3855; background:#ffe6a8; }
+    .voice-status { min-height:40px; margin:10px 0 0; padding:10px; color:#7c5160; background:#fff5f7; text-align:center; font-size:12px; line-height:1.6; }
     .collection-room { position:relative; overflow:hidden; min-height:246px; border:1px solid #ecc2cd; background:#fff9fb; }
+    .collection-room[data-theme="night"] { border-color:#9f7794; background:#392737; }
+    .collection-room[data-theme="night"] .room-copy { color:#f3dbe2; }
+    .collection-room[data-theme="night"] .room-copy b { color:#ffe2a1; }
+    .collection-room[data-theme="night"] .room-inventory { background:#4b3144; border-color:#76516b; }
+    .collection-room[data-theme="night"] .room-shelf { background:#986579; box-shadow:0 8px 0 #684052; }
+    .collection-room[data-theme="cream"] { border-color:#e6c986; background:#fff8e6; }
+    .collection-room[data-theme="cream"] .room-inventory { background:#fff0ca; }
     .collection-room::before { content:""; position:absolute; inset:0 0 58px; opacity:.55; background-image:radial-gradient(circle, #efb2c0 0 1px, transparent 1.7px), linear-gradient(90deg, transparent 49%, #f4dce2 50%, transparent 51%); background-size:31px 31px, 22px 22px; pointer-events:none; }
     .room-window { position:absolute; top:15px; right:18px; width:66px; height:78px; border:5px solid #de8da1; background:#4a2b45; box-shadow:inset 0 0 0 3px #fff5f7; }
     .room-window::after { content:"✦  ✦"; position:absolute; top:18px; left:10px; color:#ffe5a5; white-space:pre; font-size:14px; }
@@ -67,6 +91,12 @@
     .inventory-item { display:grid; flex:0 0 auto; width:38px; height:38px; place-items:center; padding:0; color:#c2526c; border:1px solid #e9adbd; border-radius:50%; background:#fffdfd; font-size:20px; touch-action:none; }
     .inventory-empty { color:#a8717e; font-size:12px; }
     .room-note { min-height:42px; margin:10px 0 0; padding:10px; color:#7d5060; background:#fffafa; text-align:center; font-size:13px; line-height:1.6; }
+    .room-themes { display:flex; gap:8px; align-items:center; margin:10px 0 0; padding:9px 10px; background:#fff5f7; }
+    .room-themes b { margin-right:auto; color:#915b6b; font-size:12px; font-weight:600; }
+    .theme-swatch { width:28px; height:28px; padding:0; border:2px solid #fff; border-radius:50%; background:#db7890; box-shadow:0 0 0 1px #e5afbd; }
+    .theme-swatch[data-theme="night"] { background:#4a2b45; box-shadow:0 0 0 1px #8f6783; }
+    .theme-swatch[data-theme="cream"] { background:#f4d37c; box-shadow:0 0 0 1px #ddbc63; }
+    .theme-swatch.selected { outline:2px solid #9f3855; outline-offset:2px; }
     .room-story { display:none; margin-top:10px; padding:15px 14px 13px; color:#fff8f8; border-left:3px solid #ffd88c; background:#8e3b59; animation:story-arrive .45s ease both; }
     .room-story.show { display:block; }
     .room-story b { display:block; margin-bottom:5px; color:#ffe2a1; font-family:"ZCOOL KuaiLe",cursive; font-size:17px; font-weight:400; }
@@ -302,6 +332,20 @@
       <div class="daily-gift" id="dailyGift" aria-live="polite"></div>
     </section>
 
+    <section class="band" aria-labelledby="moodTitle">
+      <div class="band-head"><span class="number">心</span><div><h2 id="moodTitle">小悦宝的心情漂流瓶</h2><p class="sub">今天不必把心情说得很完整，选一个最接近的，把它交给小周宝。</p></div></div>
+      <div class="mood-stage">
+        <div class="mood-choices" id="moodChoices">
+          <button class="mood-choice" type="button" data-mood="想被抱抱"><span>♥</span>想被抱抱</button>
+          <button class="mood-choice" type="button" data-mood="有点委屈"><span>☁</span>有点委屈</button>
+          <button class="mood-choice" type="button" data-mood="今天开心"><span>✦</span>今天开心</button>
+          <button class="mood-choice" type="button" data-mood="有点想你"><span>☾</span>有点想你</button>
+        </div>
+        <div class="mood-bottle-row"><div class="mood-bottle" id="moodBottle" aria-hidden="true">♥</div><button class="mood-throw" id="moodThrow" type="button">把心情放进瓶子</button></div>
+        <div class="mood-reply" id="moodReply" aria-live="polite">小悦宝可以先选一个心情。无论是哪一种，都值得被认真接住。</div>
+      </div>
+    </section>
+
     <section class="band" aria-labelledby="roomTitle">
       <div class="band-head"><span class="number">00</span><div><h2 id="roomTitle">小悦宝的甜蜜收藏屋</h2><p class="sub">每完成一站，就会收到一件偏爱小物。把它拖进小屋，慢慢布置成只属于小悦宝的秘密角落。</p></div></div>
       <div class="collection-room">
@@ -312,8 +356,19 @@
         </div>
         <div class="room-inventory" id="roomInventory" aria-live="polite"><span class="inventory-empty">完成游乐园里的任意一站，就会有新礼物送到这里。</span></div>
       </div>
+      <div class="room-themes" id="roomThemes" aria-label="选择收藏屋主题"><b>今天想住进哪一种小屋</b><button class="theme-swatch selected" type="button" data-theme="rose" aria-label="樱花小屋" title="樱花小屋"></button><button class="theme-swatch" type="button" data-theme="night" aria-label="星夜小屋" title="星夜小屋"></button><button class="theme-swatch" type="button" data-theme="cream" aria-label="奶油小屋" title="奶油小屋"></button></div>
       <div class="room-note" id="roomNote" aria-live="polite">先去收下一份偏爱吧，收藏屋会替小悦宝好好保管。</div>
       <div class="room-story" id="roomStory" aria-live="polite"><b>解锁：小周宝的晚安小剧情</b><p>夜深的时候，收藏屋的窗边会亮起一盏小灯。小周宝把今天攒到的抱抱、好运和花香都放在这里，只等小悦宝来拿。你只要说一句“我来啦”，就能得到一整晚不打烊的偏爱。</p></div>
+    </section>
+
+    <section class="band" aria-labelledby="voiceTitle">
+      <div class="band-head"><span class="number">声</span><div><h2 id="voiceTitle">小周宝的语音留声机</h2><p class="sub">点开一枚留声机，就收下一段想立刻对小悦宝说的话。</p></div></div>
+      <div class="voice-grid" id="voiceGrid">
+        <button class="voice-note" type="button" data-voice="hug"><span>▶</span>抱抱补给</button>
+        <button class="voice-note" type="button" data-voice="praise"><span>▶</span>认真夸夸</button>
+        <button class="voice-note" type="button" data-voice="goodnight"><span>▶</span>睡前哄哄</button>
+      </div>
+      <div class="voice-status" id="voiceStatus" aria-live="polite">今天想先听哪一段？</div>
     </section>
 
     <section class="band">
@@ -503,6 +558,7 @@
       document.body.classList.add('opened');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       startMusic();
+      requestAnimationFrame(() => resetScratchCard());
     });
 
     const currentHour = new Date().getHours();
@@ -570,6 +626,75 @@
       if (musicOn) stopMusic(); else startMusic();
     });
 
+    const moodReplies = {
+      '想被抱抱': '小悦宝的抱抱申请已经通过。先不用说任何话，来这里靠一会儿，抱多久都算数。',
+      '有点委屈': '委屈不是小题大做。小悦宝可以慢慢讲，也可以先什么都不讲，我会先站在你这一边。',
+      '今天开心': '那我要把小悦宝的这份开心偷偷存进瓶子里，等你累的时候，再拿出来给你看。',
+      '有点想你': '小悦宝想我这件事，我已经收到啦。我也在想你，想把下一次见面的时间快一点拉近。'
+    };
+    let selectedMood = '';
+    document.querySelectorAll('.mood-choice').forEach((button) => {
+      button.addEventListener('click', () => {
+        selectedMood = button.dataset.mood;
+        document.querySelectorAll('.mood-choice').forEach((item) => item.classList.toggle('selected', item === button));
+        document.querySelector('#moodReply').textContent = `小悦宝选择了“${selectedMood}”。把它放进瓶子里，就会收到一段专属回应。`;
+      });
+    });
+    document.querySelector('#moodThrow').addEventListener('click', () => {
+      if (!selectedMood) {
+        document.querySelector('#moodReply').textContent = '先帮小周宝选一下小悦宝现在最接近的心情吧。';
+        return;
+      }
+      const bottle = document.querySelector('#moodBottle');
+      bottle.classList.remove('toss');
+      void bottle.offsetWidth;
+      bottle.classList.add('toss');
+      document.querySelector('#moodReply').textContent = moodReplies[selectedMood];
+      try { localStorage.setItem('xiaoyuebao-last-mood', selectedMood); } catch {}
+    });
+
+    const voiceNotes = {
+      hug: { label: '抱抱补给', file: 'assets/voice-hug.mp3', text: '小悦宝，先给你一个很长很长的抱抱。今天不管发生了什么，你都可以来找我。' },
+      praise: { label: '认真夸夸', file: 'assets/voice-praise.mp3', text: '小悦宝真的很可爱，也很认真，很值得被放在心上。今天也辛苦啦。' },
+      goodnight: { label: '睡前哄哄', file: 'assets/voice-goodnight.mp3', text: '晚安，小悦宝。把今天的疲惫都交给夜晚吧，明天醒来还是被好好偏爱的小朋友。' }
+    };
+    let activeVoiceAudio = null;
+    function speakVoiceFallback(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'zh-CN';
+      utterance.rate = .9;
+      utterance.pitch = 1;
+      window.speechSynthesis.speak(utterance);
+    }
+    document.querySelectorAll('.voice-note').forEach((button) => {
+      button.addEventListener('click', () => {
+        const note = voiceNotes[button.dataset.voice];
+        if (activeVoiceAudio) activeVoiceAudio.pause();
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        document.querySelectorAll('.voice-note').forEach((item) => item.classList.remove('playing'));
+        button.classList.add('playing');
+        document.querySelector('#voiceStatus').textContent = `正在播放：${note.label}`;
+        const audio = new Audio(note.file);
+        activeVoiceAudio = audio;
+        let usedFallback = false;
+        const fallback = () => {
+          if (usedFallback) return;
+          usedFallback = true;
+          speakVoiceFallback(note.text);
+          document.querySelector('#voiceStatus').textContent = `${note.label}送达啦。`;
+          button.classList.remove('playing');
+        };
+        audio.addEventListener('error', fallback, { once: true });
+        audio.addEventListener('ended', () => {
+          button.classList.remove('playing');
+          document.querySelector('#voiceStatus').textContent = `${note.label}已经好好送到小悦宝这里。`;
+        }, { once: true });
+        audio.play().catch(fallback);
+      });
+    });
+
     const stationTotal = 13;
     const roomRewards = {
       catch: { icon: '☁', name: '云朵托盘' },
@@ -590,11 +715,17 @@
     const roomPlacements = {};
     const progressStorageKey = 'xiaoyuebao-love-progress-v2';
     let roomDrag = null;
+    let roomTheme = 'rose';
 
     function saveLoveProgress() {
       try {
-        localStorage.setItem(progressStorageKey, JSON.stringify({ stations: [...loveStations], placements: roomPlacements }));
+        localStorage.setItem(progressStorageKey, JSON.stringify({ stations: [...loveStations], placements: roomPlacements, theme: roomTheme }));
       } catch {}
+    }
+    function applyRoomTheme(theme) {
+      roomTheme = ['rose', 'night', 'cream'].includes(theme) ? theme : 'rose';
+      document.querySelector('.collection-room').dataset.theme = roomTheme;
+      document.querySelectorAll('.theme-swatch').forEach((button) => button.classList.toggle('selected', button.dataset.theme === roomTheme));
     }
     function updateCertificate() {
       const collected = loveStations.size;
@@ -695,6 +826,7 @@
     function restoreLoveProgress() {
       try {
         const saved = JSON.parse(localStorage.getItem(progressStorageKey) || '{}');
+        if (['rose', 'night', 'cream'].includes(saved.theme)) roomTheme = saved.theme;
         (Array.isArray(saved.stations) ? saved.stations : []).forEach((key) => { if (roomRewards[key]) loveStations.add(key); });
         if (saved.placements && typeof saved.placements === 'object') {
           Object.entries(saved.placements).forEach(([key, placement]) => {
@@ -702,6 +834,7 @@
           });
         }
       } catch {}
+      applyRoomTheme(roomTheme);
       updateCertificate();
       renderCollectionRoom();
       updateRoomNote();
@@ -715,6 +848,12 @@
       renderCollectionRoom();
       updateRoomNote(isNew ? station : null);
     }
+    document.querySelectorAll('.theme-swatch').forEach((button) => {
+      button.addEventListener('click', () => {
+        applyRoomTheme(button.dataset.theme);
+        saveLoveProgress();
+      });
+    });
     restoreLoveProgress();
     document.querySelector('#certificateButton').addEventListener('click', () => {
       const card = document.querySelector('#certificateCard');
