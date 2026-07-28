@@ -69,7 +69,7 @@
     .voice-note.playing { color:#fff; border-color:#92344f; background:#a9425d; }
     .voice-note.playing span { color:#9b3855; background:#ffe6a8; }
     .voice-status { min-height:40px; margin:10px 0 0; padding:10px; color:#7c5160; background:#fff5f7; text-align:center; font-size:12px; line-height:1.6; }
-    .collection-room { position:relative; overflow:hidden; min-height:246px; border:1px solid #ecc2cd; background:#fff9fb; }
+    .collection-room { position:relative; overflow:hidden; min-height:322px; border:1px solid #ecc2cd; background:#fff9fb; }
     .collection-room[data-theme="night"] { border-color:#9f7794; background:#392737; }
     .collection-room[data-theme="night"] .room-copy { color:#f3dbe2; }
     .collection-room[data-theme="night"] .room-copy b { color:#ffe2a1; }
@@ -80,11 +80,14 @@
     .collection-room::before { content:""; position:absolute; inset:0 0 58px; opacity:.55; background-image:radial-gradient(circle, #efb2c0 0 1px, transparent 1.7px), linear-gradient(90deg, transparent 49%, #f4dce2 50%, transparent 51%); background-size:31px 31px, 22px 22px; pointer-events:none; }
     .room-window { position:absolute; top:15px; right:18px; width:66px; height:78px; border:5px solid #de8da1; background:#4a2b45; box-shadow:inset 0 0 0 3px #fff5f7; }
     .room-window::after { content:"✦  ✦"; position:absolute; top:18px; left:10px; color:#ffe5a5; white-space:pre; font-size:14px; }
-    .room-shelf { position:absolute; right:12px; bottom:57px; left:12px; height:12px; background:#c86a80; box-shadow:0 8px 0 #a84662; }
-    .room-scene { position:relative; z-index:1; height:188px; overflow:hidden; touch-action:none; }
+    .room-shelf { position:absolute; right:14px; left:14px; height:8px; background:#c86a80; box-shadow:0 5px 0 #a84662; }
+    .room-shelf.one { top:119px; }
+    .room-shelf.two { top:174px; }
+    .room-shelf.three { top:229px; }
+    .room-scene { position:relative; z-index:1; height:264px; overflow:hidden; touch-action:none; }
     .room-copy { position:absolute; top:18px; left:17px; max-width:190px; color:#874e60; font-size:13px; line-height:1.65; }
     .room-copy b { display:block; color:var(--wine); font-family:"ZCOOL KuaiLe",cursive; font-size:17px; font-weight:400; }
-    .room-item { position:absolute; z-index:2; display:grid; width:48px; height:48px; place-items:center; padding:0; color:#a54460; border:1px solid #e9b1c0; border-radius:50%; background:#fffdfd; box-shadow:0 4px 0 #edcbd4; font-size:25px; touch-action:none; }
+    .room-item { position:absolute; z-index:2; display:grid; width:42px; height:42px; place-items:center; padding:0; color:#a54460; border:1px solid #e9b1c0; border-radius:8px; background:#fffdfd; box-shadow:0 4px 0 #edcbd4; font-size:23px; touch-action:none; transform:translateX(-50%); }
     .room-item.dragging { opacity:.25; }
     .room-inventory { position:relative; z-index:2; display:flex; min-height:58px; gap:7px; align-items:center; padding:8px 10px; overflow-x:auto; border-top:1px solid #ecd1d7; background:#fff1f4; }
     .room-inventory::before { content:"收集到的偏爱"; flex:0 0 auto; color:#9b6070; font-size:11px; }
@@ -347,12 +350,14 @@
     </section>
 
     <section class="band" aria-labelledby="roomTitle">
-      <div class="band-head"><span class="number">00</span><div><h2 id="roomTitle">小悦宝的甜蜜收藏屋</h2><p class="sub">每完成一站，就会收到一件偏爱小物。把它拖进小屋，慢慢布置成只属于小悦宝的秘密角落。</p></div></div>
+      <div class="band-head"><span class="number">00</span><div><h2 id="roomTitle">小悦宝的甜蜜收藏屋</h2><p class="sub">每完成一站，就会收到一件偏爱小物。把它拖进展示柜，收藏屋会帮小悦宝整整齐齐地摆好。</p></div></div>
       <div class="collection-room">
         <div class="room-scene" id="roomScene" aria-label="小悦宝的甜蜜收藏屋，可以把小物件拖进来布置">
           <div class="room-window" aria-hidden="true"></div>
-          <div class="room-copy"><b>只属于小悦宝的小屋</b><span>把收集到的偏爱，摆在你喜欢的位置吧。</span></div>
-          <div class="room-shelf" aria-hidden="true"></div>
+          <div class="room-copy"><b>只属于小悦宝的小屋</b><span>每一件偏爱，都有它刚刚好的位置。</span></div>
+          <div class="room-shelf one" aria-hidden="true"></div>
+          <div class="room-shelf two" aria-hidden="true"></div>
+          <div class="room-shelf three" aria-hidden="true"></div>
         </div>
         <div class="room-inventory" id="roomInventory" aria-live="polite"><span class="inventory-empty">完成游乐园里的任意一站，就会有新礼物送到这里。</span></div>
       </div>
@@ -532,11 +537,11 @@
     </section>
 
     <section class="band">
-      <div class="band-head"><span class="number">13</span><div><h2>小悦宝的恋爱证书</h2><p class="sub">逛完十三站游乐园，这一份只属于小悦宝的惊喜才会打开。</p></div></div>
+      <div class="band-head"><span class="number">13</span><div><h2>小悦宝的恋爱证书</h2><p class="sub">收集 7 份偏爱，就能提前打开这一份只属于小悦宝的惊喜。</p></div></div>
       <div class="certificate" id="certificateCard">
         <p class="certificate-kicker">XIAO YUE BAO LOVE CERTIFICATE</p>
         <h3>今日偏爱认证中</h3>
-        <p id="certificateStatus">再收集 13 份偏爱，就能解锁小悦宝的专属恋爱证书。</p>
+        <p id="certificateStatus">再收集 7 份偏爱，就能解锁小悦宝的专属恋爱证书。</p>
         <button class="certificate-button" id="certificateButton" type="button" disabled>还没有集齐偏爱</button>
       </div>
     </section>
@@ -696,6 +701,7 @@
     });
 
     const stationTotal = 13;
+    const certificateUnlockAt = 7;
     const roomRewards = {
       catch: { icon: '☁', name: '云朵托盘' },
       scratch: { icon: '✦', name: '好运星签' },
@@ -716,6 +722,10 @@
     const progressStorageKey = 'xiaoyuebao-love-progress-v2';
     let roomDrag = null;
     let roomTheme = 'rose';
+    const roomSlots = Array.from({ length: 15 }, (_, index) => ({
+      x: 10 + (index % 5) * 20,
+      y: 40 + Math.floor(index / 5) * 21
+    }));
 
     function saveLoveProgress() {
       try {
@@ -732,12 +742,12 @@
       document.querySelector('#loveCount').textContent = `${collected} / ${stationTotal}`;
       const status = document.querySelector('#certificateStatus');
       const button = document.querySelector('#certificateButton');
-      if (collected === stationTotal) {
-        status.textContent = '十三份偏爱都收好了。小悦宝，专属恋爱证书已经盖好印章，等你亲自打开。';
+      if (collected >= certificateUnlockAt) {
+        status.textContent = '已经攒够 7 份偏爱啦。小悦宝，专属恋爱证书已经盖好印章，等你亲自打开。';
         button.disabled = false;
         button.textContent = '打开专属恋爱证书';
       } else {
-        status.textContent = `再收集 ${stationTotal - collected} 份偏爱，就能解锁小悦宝的专属恋爱证书。`;
+        status.textContent = `再收集 ${certificateUnlockAt - collected} 份偏爱，就能解锁小悦宝的专属恋爱证书。`;
       }
     }
     function updateRoomNote(newReward) {
@@ -752,6 +762,26 @@
       }
       document.querySelector('#roomStory').classList.toggle('show', placed >= 5);
     }
+    function nearestRoomSlot(x, y, usedSlots = new Set()) {
+      const choices = roomSlots
+        .map((slot, index) => ({ index, distance: (slot.x - x) ** 2 + (slot.y - y) ** 2 }))
+        .filter((candidate) => !usedSlots.has(candidate.index))
+        .sort((a, b) => a.distance - b.distance);
+      return choices.length ? choices[0].index : null;
+    }
+    function normaliseRoomPlacements() {
+      const usedSlots = new Set();
+      Object.keys(roomPlacements).forEach((key) => {
+        const placement = roomPlacements[key];
+        let slot = Number.isInteger(placement?.slot) && placement.slot >= 0 && placement.slot < roomSlots.length && !usedSlots.has(placement.slot) ? placement.slot : null;
+        if (slot === null && Number.isFinite(placement?.x) && Number.isFinite(placement?.y)) slot = nearestRoomSlot(placement.x, placement.y, usedSlots);
+        if (slot === null) delete roomPlacements[key];
+        else {
+          roomPlacements[key] = { slot };
+          usedSlots.add(slot);
+        }
+      });
+    }
     function createRoomButton(className, key, placement) {
       const reward = roomRewards[key];
       const button = document.createElement('button');
@@ -762,8 +792,9 @@
       button.title = reward.name;
       button.setAttribute('aria-label', `拖动${reward.name}${placement ? '，可以重新摆放' : '到收藏屋'}`);
       if (placement) {
-        button.style.left = `${placement.x}%`;
-        button.style.top = `${placement.y}%`;
+        const slot = roomSlots[placement.slot];
+        button.style.left = `${slot.x}%`;
+        button.style.top = `${slot.y}%`;
       }
       button.addEventListener('pointerdown', startRoomDrag);
       return button;
@@ -814,12 +845,20 @@
       ghost.remove();
       source.classList.remove('dragging');
       if (inside) {
-        const x = Math.max(24, Math.min(bounds.width - 24, event.clientX - bounds.left));
-        const y = Math.max(24, Math.min(bounds.height - 24, event.clientY - bounds.top));
-        roomPlacements[key] = { x: Math.round(x / bounds.width * 1000) / 10, y: Math.round(y / bounds.height * 1000) / 10 };
+        const x = (event.clientX - bounds.left) / bounds.width * 100;
+        const y = (event.clientY - bounds.top) / bounds.height * 100;
+        const slot = nearestRoomSlot(x, y);
+        const originSlot = roomPlacements[key]?.slot;
+        const occupiedKey = Object.keys(roomPlacements).find((placedKey) => placedKey !== key && roomPlacements[placedKey].slot === slot);
+        if (occupiedKey) {
+          if (Number.isInteger(originSlot)) roomPlacements[occupiedKey] = { slot: originSlot };
+          else delete roomPlacements[occupiedKey];
+        }
+        roomPlacements[key] = { slot };
         saveLoveProgress();
         renderCollectionRoom();
         updateRoomNote();
+        document.querySelector('#roomNote').textContent = occupiedKey ? '展示柜帮小悦宝把两件小物交换好位置啦。' : '收纳完成啦，每一件偏爱都乖乖待在自己的小格子里。';
       }
       roomDrag = null;
     });
@@ -830,10 +869,11 @@
         (Array.isArray(saved.stations) ? saved.stations : []).forEach((key) => { if (roomRewards[key]) loveStations.add(key); });
         if (saved.placements && typeof saved.placements === 'object') {
           Object.entries(saved.placements).forEach(([key, placement]) => {
-            if (roomRewards[key] && loveStations.has(key) && Number.isFinite(placement.x) && Number.isFinite(placement.y)) roomPlacements[key] = placement;
+            if (roomRewards[key] && loveStations.has(key) && placement && typeof placement === 'object') roomPlacements[key] = placement;
           });
         }
       } catch {}
+      normaliseRoomPlacements();
       applyRoomTheme(roomTheme);
       updateCertificate();
       renderCollectionRoom();
