@@ -212,7 +212,7 @@
       <span class="hero-label" id="heroLabel">今日限定：只宠小悦宝</span>
       <div class="hero-tools"><button class="sound-toggle" id="soundToggle" type="button" aria-label="开启轻音乐" title="开启轻音乐">&#9834;</button></div>
       <h1>欢迎来到<br>恋爱游乐园</h1>
-      <p class="hero-copy" id="heroCopy">这里没有必须立刻原谅的规则，只有一份想让你慢慢开心起来的认真。每玩一站，都收下一点偏爱。</p>
+      <p class="hero-copy" id="heroCopy">小悦宝今天什么都不用做，只要负责可可爱爱地收下我给你的偏心和宠爱。</p>
       <div class="sweet-meter" aria-label="今日恋爱甜度一百">
         <span>&#9829; &#9829; &#9829; &#9829; &#9829;</span><b>今日甜度 100%</b>
       </div>
@@ -388,7 +388,7 @@
     const currentHour = new Date().getHours();
     const nightMode = currentHour >= 18 || currentHour < 6;
     document.querySelector('#heroLabel').textContent = nightMode ? '晚安限定：只宠小悦宝' : '今日限定：只宠小悦宝';
-    document.querySelector('#heroCopy').textContent = nightMode ? '夜晚不适合让小悦宝一个人消化坏情绪。慢慢逛一逛，把今天的委屈换成一点点甜。' : '今天也没有必须立刻原谅的规则，只有一份想让小悦宝慢慢开心起来的认真。';
+    document.querySelector('#heroCopy').textContent = nightMode ? '今晚的小悦宝不用想太多，来这里收下我悄悄攒好的晚安、抱抱和一整份偏心。' : '小悦宝今天什么都不用做，只要负责可可爱爱地收下我给你的偏心和宠爱。';
     const dayKey = new Date().toISOString().slice(0, 10);
     const dailyNotes = nightMode ? [
       '今晚的晚安彩蛋：小悦宝可以把不开心先放在这里，明天再慢慢处理。',
