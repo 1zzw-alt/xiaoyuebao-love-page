@@ -69,6 +69,42 @@
     .voice-note.playing { color:#fff; border-color:#92344f; background:#a9425d; }
     .voice-note.playing span { color:#9b3855; background:#ffe6a8; }
     .voice-status { min-height:40px; margin:10px 0 0; padding:10px; color:#7c5160; background:#fff5f7; text-align:center; font-size:12px; line-height:1.6; }
+    .voice-random { width:100%; min-height:40px; margin-top:9px; color:#8f3450; border:1px solid #e6aebb; background:#fff8fa; font-size:13px; }
+    .daily-portal { position:relative; overflow:hidden; padding:18px 15px; color:#fff8f5; background:#9f3d59; }
+    .daily-portal::after { content:"✦"; position:absolute; right:17px; top:10px; color:#ffe2a1; font-size:64px; opacity:.45; }
+    .daily-portal > * { position:relative; z-index:1; }
+    .daily-kicker { margin:0 0 6px; color:#ffe2a1; font-family:"ZCOOL KuaiLe",cursive; font-size:14px; }
+    .daily-title { margin:0; font-size:20px; }
+    .daily-copy { min-height:43px; margin:8px 0 13px; max-width:310px; color:#ffedf1; font-size:13px; line-height:1.7; }
+    .daily-action { min-height:39px; padding:7px 13px; color:#8e314d; border:0; background:#ffe3a8; font-size:13px; }
+    .answer-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+    .answer-choice { min-height:50px; color:#8d5063; border:1px solid #e9c6ce; background:#fffafa; font-size:13px; }
+    .answer-choice.selected { color:#fff; border-color:#a23c59; background:#aa425e; }
+    .answer-card { min-height:86px; margin-top:10px; padding:13px; color:#76495a; border-left:3px solid #da6680; background:#fff3f6; font-size:13px; line-height:1.7; }
+    .answer-card b { color:#9e3955; }
+    .timeline { position:relative; display:grid; gap:9px; }
+    .timeline::before { content:""; position:absolute; top:18px; bottom:18px; left:16px; width:1px; background:#e1a0b1; }
+    .timeline-item { position:relative; min-height:62px; padding:11px 12px 10px 47px; color:#7d4f60; border:1px solid #edcdd5; background:#fffdfd; text-align:left; }
+    .timeline-item::before { content:""; position:absolute; z-index:1; top:19px; left:10px; width:12px; height:12px; border:3px solid #fff; border-radius:50%; background:#d85e78; box-shadow:0 0 0 1px #df9eae; }
+    .timeline-item b { display:block; color:#943750; font-size:14px; }
+    .timeline-item small { display:block; margin-top:3px; color:#986a78; font-size:12px; line-height:1.55; }
+    .timeline-item.selected { color:#fff; border-color:#92344e; background:#9f3b56; }
+    .timeline-item.selected b, .timeline-item.selected small { color:#fff1e8; }
+    .timeline-reply { min-height:48px; margin:10px 0 0; padding:11px; color:#7c4d5d; background:#fff4f6; font-size:13px; line-height:1.65; }
+    .anniversary { margin-top:12px; padding:13px; border:1px solid #ead0b6; background:#fff9e9; }
+    .anniversary label { display:block; color:#985a67; font-size:13px; }
+    .anniversary-row { display:flex; gap:8px; margin-top:9px; }
+    .anniversary input { min-width:0; flex:1; min-height:40px; padding:7px; color:#754556; border:1px solid #e5c09c; background:#fffdf7; font:inherit; font-size:13px; }
+    .anniversary button { min-width:74px; color:#fff; border:0; background:#c45770; font-size:13px; }
+    .anniversary-status { min-height:39px; margin:9px 0 0; color:#7e5360; font-size:12px; line-height:1.65; }
+    .photo-frame { position:relative; min-height:230px; padding:25px 20px 20px; overflow:hidden; color:#864d5e; border:11px solid #fffdfd; outline:1px solid #e9bfca; background:#ffe7ee; box-shadow:5px 6px 0 #e8c4cf; text-align:center; }
+    .photo-frame::before, .photo-frame::after { content:"✦"; position:absolute; color:#e39aa9; font-size:25px; }
+    .photo-frame::before { top:13px; left:14px; }
+    .photo-frame::after { right:14px; bottom:13px; }
+    .photo-frame small { display:block; color:#aa7180; font-size:11px; }
+    .photo-frame b { display:block; margin:53px auto 11px; max-width:260px; color:#9a3854; font-family:"ZCOOL KuaiLe",cursive; font-size:23px; font-weight:400; line-height:1.45; }
+    .photo-frame span { display:block; color:#966675; font-size:12px; }
+    .photo-refresh { width:100%; min-height:40px; margin-top:12px; color:#963750; border:1px solid #e1afbc; background:#fff7f9; font-size:13px; }
     .collection-room { position:relative; overflow:hidden; min-height:322px; border:1px solid #ecc2cd; background:#fff9fb; }
     .collection-room[data-theme="night"] { border-color:#9f7794; background:#392737; }
     .collection-room[data-theme="night"] .room-copy { color:#f3dbe2; }
@@ -374,6 +410,49 @@
         <button class="voice-note" type="button" data-voice="goodnight"><span>▶</span>睡前哄哄</button>
       </div>
       <div class="voice-status" id="voiceStatus" aria-live="polite">今天想先听哪一段？</div>
+      <button class="voice-random" id="voiceRandom" type="button">随机听一句小周宝的话</button>
+    </section>
+
+    <section class="band" aria-labelledby="dailyTitle">
+      <div class="band-head"><span class="number">日</span><div><h2 id="dailyTitle">小悦宝的每日限定</h2><p class="sub">每天都会换一份小彩蛋，今天只开放给小悦宝。</p></div></div>
+      <div class="daily-portal">
+        <p class="daily-kicker" id="dailyKicker">TODAY'S LITTLE MAGIC</p>
+        <h3 class="daily-title" id="dailyPortalTitle">正在准备今日限定</h3>
+        <p class="daily-copy" id="dailyPortalCopy">轻轻点开，看看今天的小周宝给小悦宝留了什么。</p>
+        <button class="daily-action" id="dailyAction" type="button">打开今日限定</button>
+      </div>
+    </section>
+
+    <section class="band" aria-labelledby="matchTitle">
+      <div class="band-head"><span class="number">答</span><div><h2 id="matchTitle">今天的默契小问答</h2><p class="sub">选一个最像此刻的小悦宝的答案，生成一张可以截图发给小周宝的默契回执。</p></div></div>
+      <div class="answer-grid" id="answerGrid">
+        <button class="answer-choice" type="button" data-answer="抱抱补给">想被抱抱</button>
+        <button class="answer-choice" type="button" data-answer="甜品时间">想吃甜品</button>
+        <button class="answer-choice" type="button" data-answer="慢慢散步">想一起散步</button>
+        <button class="answer-choice" type="button" data-answer="安静陪伴">想有人陪着</button>
+      </div>
+      <div class="answer-card" id="answerCard" aria-live="polite">小悦宝今天最想要哪一种偏爱？</div>
+    </section>
+
+    <section class="band" aria-labelledby="timelineTitle">
+      <div class="band-head"><span class="number">时</span><div><h2 id="timelineTitle">我们的恋爱时间轴</h2><p class="sub">过去、此刻和下一次见面，都值得被好好放进同一条时间线。</p></div></div>
+      <div class="timeline" id="timeline">
+        <button class="timeline-item" type="button" data-timeline="past"><b>第一次心动</b><small>从某一个瞬间开始，小悦宝就变成了很特别的人。</small></button>
+        <button class="timeline-item" type="button" data-timeline="now"><b>正在发生的现在</b><small>今天也在认真喜欢、认真想念、认真把你放在心上。</small></button>
+        <button class="timeline-item" type="button" data-timeline="future"><b>下一次见面</b><small>把时间留出来，把想说的话和想给的拥抱都留给小悦宝。</small></button>
+      </div>
+      <div class="timeline-reply" id="timelineReply" aria-live="polite">点一个时间点，收下一段藏在时间里的话。</div>
+      <div class="anniversary">
+        <label for="anniversaryInput">下一次特别日</label>
+        <div class="anniversary-row"><input id="anniversaryInput" type="date" /><button id="anniversarySave" type="button">设定</button></div>
+        <p class="anniversary-status" id="anniversaryStatus" aria-live="polite">选一个值得纪念的日子，到那天会自动点亮星河彩蛋。</p>
+      </div>
+    </section>
+
+    <section class="band" aria-labelledby="photoTitle">
+      <div class="band-head"><span class="number">拍</span><div><h2 id="photoTitle">小悦宝的今日拍照框</h2><p class="sub">把喜欢的自拍放进这个画面里，截图留住今天甜甜的一刻。</p></div></div>
+      <div class="photo-frame" id="photoFrame"><small id="photoDate"></small><b id="photoQuote">今天的小悦宝，也要被偏爱得明目张胆。</b><span>FROM：一直很在意你的小周宝</span></div>
+      <button class="photo-refresh" id="photoRefresh" type="button">换一句今日拍照文案</button>
     </section>
 
     <section class="band">
@@ -716,6 +795,90 @@
         audio.play().catch(fallback);
       });
     });
+    const voiceButtons = [...document.querySelectorAll('.voice-note')];
+    document.querySelector('#voiceRandom').addEventListener('click', () => {
+      voiceButtons[Math.floor(Math.random() * voiceButtons.length)].click();
+    });
+
+    const dailyMagic = [
+      { title: '抱抱加倍日', copy: '今天的小悦宝可以把抱抱额度调成无限。想被哄的时候，不用排队，也不用讲道理。' },
+      { title: '甜品优先日', copy: '今天有一份小甜品资格，下一次见面第一口要留给小悦宝。' },
+      { title: '夸夸放送日', copy: '今日任务：认真记住三件小悦宝很厉害的地方，然后理直气壮地夸出来。' },
+      { title: '慢慢陪伴日', copy: '今天不赶时间。小悦宝想说话就说，想安静也可以，我都陪着。' },
+      { title: '小愿望兑现日', copy: '选一个小愿望吧，小周宝会把它放进下一次见面的优先清单。' }
+    ];
+    const dateNumber = Number(dayKey.replaceAll('-', ''));
+    const todayMagic = dailyMagic[dateNumber % dailyMagic.length];
+    document.querySelector('#dailyPortalTitle').textContent = todayMagic.title;
+    document.querySelector('#dailyAction').addEventListener('click', () => {
+      document.querySelector('#dailyPortalCopy').textContent = todayMagic.copy;
+      document.querySelector('#dailyAction').textContent = '今日限定已收下';
+    });
+
+    const matchPredictions = ['抱抱补给', '甜品时间', '慢慢散步', '安静陪伴'];
+    document.querySelectorAll('.answer-choice').forEach((button, index) => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.answer-choice').forEach((item) => item.classList.toggle('selected', item === button));
+        const answer = button.dataset.answer;
+        const predicted = matchPredictions[(dateNumber + index * 3) % matchPredictions.length];
+        const score = answer === predicted ? 100 : 75 + (dateNumber + index) % 20;
+        const receipt = `XYB-${dayKey.replaceAll('-', '')}-${String(index + 1).padStart(2, '0')}`;
+        document.querySelector('#answerCard').innerHTML = `<b>默契回执 ${receipt}</b><br>小悦宝选择：${answer}。小周宝猜的是：${predicted}。今日默契值 ${score}% ，这张回执可以截图发给小周宝签收。`;
+      });
+    });
+
+    const timelineNotes = {
+      past: '那不是一个必须说清日期的瞬间，而是从那以后，小悦宝在我这里越来越特别。',
+      now: '现在这一格的内容是：小周宝依然会认真听小悦宝说话，也会把喜欢落到每一件小事上。',
+      future: '未来这一格留给下一次见面。到时候把手伸给我，剩下的安排让我慢慢兑现。'
+    };
+    document.querySelectorAll('.timeline-item').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.timeline-item').forEach((item) => item.classList.toggle('selected', item === button));
+        document.querySelector('#timelineReply').textContent = timelineNotes[button.dataset.timeline];
+      });
+    });
+    const anniversaryStorageKey = 'xiaoyuebao-anniversary-date';
+    const anniversaryInput = document.querySelector('#anniversaryInput');
+    function updateAnniversary() {
+      const value = anniversaryInput.value;
+      const status = document.querySelector('#anniversaryStatus');
+      if (!value) {
+        status.textContent = '选一个值得纪念的日子，到那天会自动点亮星河彩蛋。';
+        return;
+      }
+      const target = new Date(`${value}T00:00:00`);
+      const today = new Date();
+      const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const days = Math.round((target - todayStart) / 86400000);
+      if (days === 0) {
+        status.textContent = '今天就是特别日。星河彩蛋已点亮，小周宝把一整份特别偏爱送给小悦宝。';
+        window.celebrateLove?.();
+      } else if (days > 0) {
+        status.textContent = `距离这份特别纪念还有 ${days} 天。小周宝已经开始偷偷期待啦。`;
+      } else {
+        status.textContent = '这个特别日已经被好好收藏。重新选下一次值得期待的日子吧。';
+      }
+    }
+    try { anniversaryInput.value = localStorage.getItem(anniversaryStorageKey) || ''; } catch {}
+    document.querySelector('#anniversarySave').addEventListener('click', () => {
+      try { localStorage.setItem(anniversaryStorageKey, anniversaryInput.value); } catch {}
+      updateAnniversary();
+    });
+    updateAnniversary();
+
+    const photoQuotes = [
+      '今天的小悦宝，也要被偏爱得明目张胆。',
+      '小悦宝一笑，普通的一天也会变成纪念日。',
+      '把今天的可爱存起来，留给以后慢慢回看。',
+      '镜头里的小悦宝，是小周宝今天最喜欢的画面。',
+      '不需要滤镜，小悦宝本来就闪闪发光。'
+    ];
+    let photoQuoteIndex = dateNumber % photoQuotes.length;
+    document.querySelector('#photoDate').textContent = `${new Date().getFullYear()}.${String(new Date().getMonth() + 1).padStart(2, '0')}.${String(new Date().getDate()).padStart(2, '0')} / XIAO YUE BAO`;
+    function showPhotoQuote() { document.querySelector('#photoQuote').textContent = photoQuotes[photoQuoteIndex % photoQuotes.length]; }
+    document.querySelector('#photoRefresh').addEventListener('click', () => { photoQuoteIndex += 1; showPhotoQuote(); });
+    showPhotoQuote();
 
     const stationTotal = 13;
     const certificateUnlockAt = 7;
@@ -1413,8 +1576,10 @@
         document.querySelectorAll('.wish-choice').forEach((item) => item.classList.remove('selected'));
         button.classList.add('selected');
         const wish = button.dataset.wish;
-        document.querySelector('#wishTitle').textContent = `小悦宝想要：${wish}`;
+        const wishCode = `WISH-${dayKey.replaceAll('-', '')}-${String([...document.querySelectorAll('.wish-choice')].indexOf(button) + 1).padStart(2, '0')}`;
+        document.querySelector('#wishTitle').textContent = `心愿回执：${wish}`;
         document.querySelector('#wishText').textContent = wishReplies[wish];
+        document.querySelector('.wish-save').textContent = `回执编号：${wishCode}，截图发给小周宝签收。`;
         collectLove('wish');
       });
     });
