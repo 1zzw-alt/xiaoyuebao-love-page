@@ -33,6 +33,10 @@
     .envelope-letter small { display:block; margin-top:8px; color:#916b76; font-size:13px; }
     .seal { position:absolute; z-index:4; top:51%; left:50%; display:grid; width:58px; height:58px; place-items:center; color:#fff; border:3px solid #f6ced7; border-radius:50%; background:var(--wine); font-size:28px; transform:translate(-50%,-50%); }
     .opening-hint { margin:21px 0 0; color:#f5d3dc; font-size:14px; }
+    body.unsealing .envelope::after { transform:rotateX(50deg); }
+    body.unsealing .envelope-letter { transform:translateY(-28px); }
+    body.unsealing .seal { animation:seal-pop .5s ease both; }
+    @keyframes seal-pop { 45% { transform:translate(-50%,-50%) scale(1.16) rotate(12deg); } 100% { transform:translate(-50%,-50%) scale(.05) rotate(30deg); opacity:0; } }
     .page { position:relative; z-index:1; display:none; width:min(100%,620px); min-height:100vh; margin:0 auto; padding:18px 16px 48px; background:rgba(255,241,245,.035); }
     body.opened .opening { display:none; }
     body.opened .page { display:block; }
@@ -69,6 +73,12 @@
     .voice-note.playing { color:#fff; border-color:#92344f; background:#a9425d; }
     .voice-note.playing span { color:#9b3855; background:#ffe6a8; }
     .voice-status { min-height:40px; margin:10px 0 0; padding:10px; color:#7c5160; background:#fff5f7; text-align:center; font-size:12px; line-height:1.6; }
+    .voice-wave { display:flex; height:14px; gap:3px; align-items:center; justify-content:center; margin:8px 0 0; opacity:.32; }
+    .voice-wave i { display:block; width:3px; height:5px; background:#c45671; }
+    .voice-wave.playing { opacity:1; }
+    .voice-wave.playing i { animation:voice-wave .55s ease-in-out infinite alternate; }
+    .voice-wave.playing i:nth-child(2) { animation-delay:.12s; } .voice-wave.playing i:nth-child(3) { animation-delay:.24s; } .voice-wave.playing i:nth-child(4) { animation-delay:.08s; } .voice-wave.playing i:nth-child(5) { animation-delay:.3s; } .voice-wave.playing i:nth-child(6) { animation-delay:.18s; } .voice-wave.playing i:nth-child(7) { animation-delay:.36s; }
+    @keyframes voice-wave { to { height:14px; } }
     .voice-random { width:100%; min-height:40px; margin-top:9px; color:#8f3450; border:1px solid #e6aebb; background:#fff8fa; font-size:13px; }
     .daily-portal { position:relative; overflow:hidden; padding:18px 15px; color:#fff8f5; background:#9f3d59; }
     .daily-portal::after { content:"✦"; position:absolute; right:17px; top:10px; color:#ffe2a1; font-size:64px; opacity:.45; }
@@ -113,6 +123,10 @@
     .collection-room[data-theme="night"] .room-shelf { background:#986579; box-shadow:0 8px 0 #684052; }
     .collection-room[data-theme="cream"] { border-color:#e6c986; background:#fff8e6; }
     .collection-room[data-theme="cream"] .room-inventory { background:#fff0ca; }
+    .collection-room.level-5 .room-window { box-shadow:inset 0 0 0 3px #fff5f7, 0 0 18px rgba(255,222,153,.78); }
+    .collection-room.level-10::after { content:"✦"; position:absolute; z-index:3; top:25px; right:42px; color:#ffe19b; font-size:28px; animation:room-sparkle 1.3s ease-in-out infinite alternate; pointer-events:none; }
+    .collection-room.level-13 { border-color:#f2ca77; box-shadow:0 0 0 2px rgba(255,220,145,.28), 0 0 24px rgba(245,190,110,.32); }
+    @keyframes room-sparkle { to { transform:scale(1.35) rotate(18deg); opacity:.55; } }
     .collection-room::before { content:""; position:absolute; inset:0 0 58px; opacity:.55; background-image:radial-gradient(circle, #efb2c0 0 1px, transparent 1.7px), linear-gradient(90deg, transparent 49%, #f4dce2 50%, transparent 51%); background-size:31px 31px, 22px 22px; pointer-events:none; }
     .room-window { position:absolute; top:15px; right:18px; width:66px; height:78px; border:5px solid #de8da1; background:#4a2b45; box-shadow:inset 0 0 0 3px #fff5f7; }
     .room-window::after { content:"✦  ✦"; position:absolute; top:18px; left:10px; color:#ffe5a5; white-space:pre; font-size:14px; }
@@ -259,6 +273,7 @@
     .date-result { display:grid; align-content:center; padding:13px; color:#7d5260; border:1px solid #e8cbd2; background:#fffafa; font-size:14px; line-height:1.65; }
     .date-button { color:#fff; border:0; background:var(--rose); font-size:13px; line-height:1.35; }
     .date-button span { display:block; margin-bottom:5px; font-size:24px; }
+    .date-confirm { grid-column:1 / -1; min-height:40px; color:#8f3450; border:1px solid #e4b3bf; background:#fff6f8; font-size:13px; }
     .wish-choices { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
     .wish-choice { min-height:49px; color:var(--wine); border:1px solid #ecced6; background:#fffafa; font-size:13px; }
     .wish-choice.selected { color:#fff; border-color:var(--wine); background:var(--wine); }
@@ -279,6 +294,8 @@
     .certificate-kicker { margin:0 0 8px; color:#ffe0a4; font-family:"ZCOOL KuaiLe",cursive; font-size:15px; }
     .certificate h3 { margin:0; font-size:23px; }
     .certificate p { margin:10px auto 16px; max-width:360px; color:#f8dce3; font-size:13px; line-height:1.7; }
+    .certificate-summary { display:none; margin:0 auto 14px !important; padding:10px; color:#fff0c8 !important; border:1px solid rgba(255,229,170,.42); background:rgba(79,19,42,.25); font-size:12px !important; }
+    .certificate.is-open .certificate-summary { display:block; }
     .certificate-button { min-height:42px; padding:7px 15px; color:var(--wine); border:0; background:#ffe6ad; font-size:13px; }
     .certificate-button:disabled { color:#d8a2af; background:#e8bdc7; cursor:default; }
     .certificate.is-open { background:#a9435e; }
@@ -410,6 +427,7 @@
         <button class="voice-note" type="button" data-voice="goodnight"><span>▶</span>睡前哄哄</button>
       </div>
       <div class="voice-status" id="voiceStatus" aria-live="polite">今天想先听哪一段？</div>
+      <div class="voice-wave" id="voiceWave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
       <button class="voice-random" id="voiceRandom" type="button">随机听一句小周宝的话</button>
     </section>
 
@@ -469,7 +487,7 @@
     <section class="band">
       <div class="band-head"><span class="number">02</span><div><h2>小悦宝的甜蜜刮刮卡</h2><p class="sub">用手指把粉色遮住的部分慢慢刮开，里面有一份特别奖励。</p></div></div>
       <div class="scratch-stage">
-        <div class="scratch-reveal"><div><b>小悦宝今日奖励</b><span>获得一张“被偏爱不用讲理由”通行证。<br>想被哄的时候，直接来找我。</span></div></div>
+        <div class="scratch-reveal"><div><b id="scratchRewardTitle">小悦宝今日奖励</b><span id="scratchRewardText">获得一张“被偏爱不用讲理由”通行证。<br>想被哄的时候，直接来找我。</span></div></div>
         <canvas id="scratchCanvas" aria-label="刮开小悦宝的甜蜜奖励"></canvas>
       </div>
       <p class="scratch-help" id="scratchHelp">从卡片上用手指来回擦一擦吧。</p>
@@ -600,6 +618,7 @@
       <div class="date-machine">
         <div class="date-result" id="dateResult" aria-live="polite">小悦宝选一份吧。下一次见面，我想把时间空出来，只认真陪你。</div>
         <button class="date-button" id="dateButton" type="button"><span aria-hidden="true">&#9829;</span>抽一份</button>
+        <button class="date-confirm" id="dateConfirm" type="button" hidden>把这份约会收进期待清单</button>
       </div>
     </section>
 
@@ -621,6 +640,7 @@
         <p class="certificate-kicker">XIAO YUE BAO LOVE CERTIFICATE</p>
         <h3>今日偏爱认证中</h3>
         <p id="certificateStatus">再收集 7 份偏爱，就能解锁小悦宝的专属恋爱证书。</p>
+        <p class="certificate-summary" id="certificateSummary"></p>
         <button class="certificate-button" id="certificateButton" type="button" disabled>还没有集齐偏爱</button>
       </div>
     </section>
@@ -628,8 +648,8 @@
     <section class="band">
       <div class="letter">
         <h2>还有一段想认真说的话</h2>
-        <p>小悦宝，对不起，我让你不开心了。你的感受从来不是小事，也不是一句“别生气了”就该翻篇的事。我会先听你说完，认真理解你为什么难过，不急着解释，也不让你一个人消化委屈。</p>
-        <p>你可以慢慢消气，可以先不理我，也可以把所有不开心都告诉我。我会把这次做得不好的地方改掉，也会在之后把你放在更重要的位置。</p>
+        <p>小悦宝，喜欢你不是只在特别的时候说一句好听的话，而是想把每一次见面、每一个小愿望、每一种心情都认真放在心上。</p>
+        <p>你可以尽管做可可爱爱的自己，想撒娇就撒娇，想被抱抱就来领抱抱。小周宝会把对小悦宝的偏爱，慢慢做成看得见、收得到的每一件小事。</p>
         <p class="sign">来自那个很在意小悦宝的人</p>
       </div>
     </section>
@@ -638,11 +658,17 @@
 
   <script>
     const openEnvelope = document.querySelector('#openEnvelope');
+    let openingStarted = false;
     openEnvelope.addEventListener('click', () => {
-      document.body.classList.add('opened');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      startMusic();
-      requestAnimationFrame(() => resetScratchCard());
+      if (openingStarted) return;
+      openingStarted = true;
+      document.body.classList.add('unsealing');
+      setTimeout(() => {
+        document.body.classList.add('opened');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        startMusic();
+        requestAnimationFrame(() => resetScratchCard());
+      }, 680);
     });
 
     const currentHour = new Date().getHours();
@@ -744,6 +770,7 @@
       void bottle.offsetWidth;
       bottle.classList.add('toss');
       document.querySelector('#moodReply').textContent = moodReplies[selectedMood];
+      loveJournal.mood = selectedMood;
       try { localStorage.setItem('xiaoyuebao-last-mood', selectedMood); } catch {}
     });
 
@@ -753,6 +780,7 @@
       goodnight: { label: '睡前哄哄', file: 'assets/voice-goodnight.mp3', text: '晚安，小悦宝。把今天的疲惫都交给夜晚吧，明天醒来还是被好好偏爱的小朋友。' }
     };
     let activeVoiceAudio = null;
+    let voicePlaybackId = 0;
     function speakVoiceFallback(text) {
       if (!('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
@@ -765,10 +793,12 @@
     document.querySelectorAll('.voice-note').forEach((button) => {
       button.addEventListener('click', () => {
         const note = voiceNotes[button.dataset.voice];
+        const playbackId = ++voicePlaybackId;
         if (activeVoiceAudio) activeVoiceAudio.pause();
         if ('speechSynthesis' in window) window.speechSynthesis.cancel();
         document.querySelectorAll('.voice-note').forEach((item) => item.classList.remove('playing'));
         button.classList.add('playing');
+        document.querySelector('#voiceWave').classList.add('playing');
         document.querySelector('#voiceStatus').textContent = `正在播放：${note.label}`;
         const audio = new Audio(note.file);
         activeVoiceAudio = audio;
@@ -776,19 +806,26 @@
         let audioStarted = false;
         let fallbackTimer;
         const fallback = () => {
-          if (usedFallback) return;
+          if (usedFallback || playbackId !== voicePlaybackId) return;
           usedFallback = true;
           clearTimeout(fallbackTimer);
           audio.pause();
           speakVoiceFallback(note.text);
           document.querySelector('#voiceStatus').textContent = `${note.label}送达啦。`;
           button.classList.remove('playing');
+          document.querySelector('#voiceWave').classList.remove('playing');
         };
         audio.addEventListener('error', fallback, { once: true });
-        audio.addEventListener('playing', () => { audioStarted = true; clearTimeout(fallbackTimer); }, { once: true });
+        audio.addEventListener('playing', () => {
+          if (playbackId !== voicePlaybackId) return;
+          audioStarted = true;
+          clearTimeout(fallbackTimer);
+        }, { once: true });
         audio.addEventListener('ended', () => {
+          if (playbackId !== voicePlaybackId) return;
           clearTimeout(fallbackTimer);
           button.classList.remove('playing');
+          document.querySelector('#voiceWave').classList.remove('playing');
           document.querySelector('#voiceStatus').textContent = `${note.label}已经好好送到小悦宝这里。`;
         }, { once: true });
         fallbackTimer = setTimeout(() => { if (!audioStarted) fallback(); }, 900);
@@ -801,18 +838,20 @@
     });
 
     const dailyMagic = [
-      { title: '抱抱加倍日', copy: '今天的小悦宝可以把抱抱额度调成无限。想被哄的时候，不用排队，也不用讲道理。' },
-      { title: '甜品优先日', copy: '今天有一份小甜品资格，下一次见面第一口要留给小悦宝。' },
-      { title: '夸夸放送日', copy: '今日任务：认真记住三件小悦宝很厉害的地方，然后理直气壮地夸出来。' },
-      { title: '慢慢陪伴日', copy: '今天不赶时间。小悦宝想说话就说，想安静也可以，我都陪着。' },
-      { title: '小愿望兑现日', copy: '选一个小愿望吧，小周宝会把它放进下一次见面的优先清单。' }
+      { title: '抱抱加倍日', game: 'catch', copy: '今天的云朵接心机开启抱抱加倍：每接住一颗爱心，甜度额外加 1。' },
+      { title: '甜品优先日', game: 'date', copy: '今天抽到约会盲盒后，甜品约会会优先出现。第一口必须留给小悦宝。' },
+      { title: '夸夸放送日', game: 'task', copy: '今天完成三张任务卡，会额外合成一张“被认真夸奖”认证。' },
+      { title: '慢慢陪伴日', game: 'star', copy: '今天点亮全部星星后，星河会多送小悦宝一句晚安。' },
+      { title: '小愿望兑现日', game: 'wish', copy: '今天许下心愿，会生成一张优先兑现回执，下一次见面先从它开始。' }
     ];
     const dateNumber = Number(dayKey.replaceAll('-', ''));
     const todayMagic = dailyMagic[dateNumber % dailyMagic.length];
+    const dailyGame = todayMagic.game;
     document.querySelector('#dailyPortalTitle').textContent = todayMagic.title;
     document.querySelector('#dailyAction').addEventListener('click', () => {
       document.querySelector('#dailyPortalCopy').textContent = todayMagic.copy;
       document.querySelector('#dailyAction').textContent = '今日限定已收下';
+      loveJournal.daily = todayMagic.title;
     });
 
     const matchPredictions = ['抱抱补给', '甜品时间', '慢慢散步', '安静陪伴'];
@@ -882,6 +921,7 @@
 
     const stationTotal = 13;
     const certificateUnlockAt = 7;
+    const loveJournal = { mood: '', wish: '', date: '', privilege: '', daily: '' };
     const roomRewards = {
       catch: { icon: '☁', name: '云朵托盘' },
       scratch: { icon: '✦', name: '好运星签' },
@@ -919,6 +959,7 @@
     }
     function updateCertificate() {
       const collected = loveStations.size;
+      window.loveSkyProgress = collected;
       document.querySelector('#loveCount').textContent = `${collected} / ${stationTotal}`;
       const status = document.querySelector('#certificateStatus');
       const button = document.querySelector('#certificateButton');
@@ -933,6 +974,10 @@
     function updateRoomNote(newReward) {
       const placed = Object.keys(roomPlacements).length;
       const note = document.querySelector('#roomNote');
+      const room = document.querySelector('.collection-room');
+      room.classList.toggle('level-5', placed >= 5);
+      room.classList.toggle('level-10', placed >= 10);
+      room.classList.toggle('level-13', placed >= 13);
       if (newReward) {
         note.textContent = `叮咚，${roomRewards[newReward].name} 已送到收藏屋。拖进去摆好，让小悦宝的秘密角落再多一点甜。`;
       } else if (placed >= 5) {
@@ -1060,6 +1105,8 @@
       card.classList.add('is-open');
       card.querySelector('h3').textContent = '小悦宝，偏爱认证成功';
       document.querySelector('#certificateStatus').textContent = '认证内容：小悦宝是值得被认真倾听、被耐心拥抱、被放在第一位的特别的人。有效期：很久很久。';
+      const details = [loveJournal.mood && `今日心情：${loveJournal.mood}`, loveJournal.wish && `心愿回执：${loveJournal.wish}`, loveJournal.date && `约会期待：${loveJournal.date}`, loveJournal.privilege && `今日特权：${loveJournal.privilege}`].filter(Boolean);
+      document.querySelector('#certificateSummary').textContent = details.length ? `本次游乐园记录 / ${details.join(' · ')}` : `本次游乐园记录 / 已收下 ${loveStations.size} 份偏爱，星河也替小悦宝记住了。`;
       document.querySelector('#certificateButton').textContent = '小悦宝已收下认证';
       window.celebrateLove?.();
     });
@@ -1128,13 +1175,14 @@
         const caught = piece.y > bounds.height - 94 && piece.y < bounds.height - 39 && piece.x + 34 > catchBasketX - 50 && piece.x < catchBasketX + 50;
         if (caught) {
           piece.node.remove();
-          catchScore = Math.max(0, catchScore + piece.value);
+          const points = piece.value > 0 && dailyGame === 'catch' ? piece.value + 1 : piece.value;
+          catchScore = Math.max(0, catchScore + points);
           catchComboCount = piece.value < 0 ? 0 : catchComboCount + 1;
           updateCatchScore();
           catchCombo.textContent = `连击 x ${catchComboCount}`;
           catchCombo.classList.remove('show');
           requestAnimationFrame(() => catchCombo.classList.add('show'));
-          document.querySelector('#catchMessage').textContent = piece.value < 0 ? '灰云被接住啦，甜度减 2，别慌，下一颗爱心马上补回来。' : piece.value === 2 ? '幸运星被小悦宝接住啦，甜度加 2。' : '稳稳接住一颗爱心，继续左右移动托盘。';
+          document.querySelector('#catchMessage').textContent = piece.value < 0 ? '灰云被接住啦，甜度减 2，别慌，下一颗爱心马上补回来。' : catchComboCount >= 5 ? `连续接住 ${catchComboCount} 次啦，小悦宝拿到了连击抱抱。` : dailyGame === 'catch' ? `今日抱抱加倍生效，甜度加 ${points}。` : piece.value === 2 ? '幸运星被小悦宝接住啦，甜度加 2。' : '稳稳接住一颗爱心，继续左右移动托盘。';
           if (catchScore >= 12) finishCatch(true);
           return false;
         }
@@ -1179,6 +1227,14 @@
     let scratchMarks = 0;
     let scratchFinished = false;
     let heartSurpriseTimer;
+    const scratchRewards = [
+      ['小悦宝的抱抱通行证', '获得一张“被偏爱不用讲理由”通行证。<br>想被哄的时候，直接来找我。'],
+      ['小悦宝的甜品优先券', '下一次见面，甜品的第一口和最后一口，都优先留给小悦宝。'],
+      ['小悦宝的晚安特别券', '今晚的小悦宝可以领取一份不催睡、不讲道理、只管温柔的晚安。']
+    ];
+    const todayScratchReward = scratchRewards[dateNumber % scratchRewards.length];
+    document.querySelector('#scratchRewardTitle').textContent = todayScratchReward[0];
+    document.querySelector('#scratchRewardText').innerHTML = todayScratchReward[1];
     function resetScratchCard() {
       clearTimeout(heartSurpriseTimer);
       const ratio = Math.min(window.devicePixelRatio || 1, 2);
@@ -1420,7 +1476,7 @@
           completedTasks += 1;
         }
         collectLove('task');
-        document.querySelector('#taskReply').textContent = completedTasks === 3 ? '三份偏爱都收好了。今天的任务完成：小悦宝只需要开开心心。' : taskReplies[index];
+        document.querySelector('#taskReply').textContent = completedTasks === 3 ? `今日被宠认证已合成：云朵抱抱、认真夸奖、任性资格都已经发给小悦宝。${dailyGame === 'task' ? ' 今日限定加赠：小周宝会多夸小悦宝三次。' : ''}` : taskReplies[index];
       });
     });
 
@@ -1429,13 +1485,15 @@
       '扭蛋打开啦：今天可以把一件不开心的小事交给我，我先听，不反驳。',
       '扭蛋打开啦：获得一张“随时想你”卡。想我的时候，直接来找我就好。'
     ];
+    const gachaRarities = ['普通心动', '稀有偏爱', '隐藏心愿'];
     document.querySelectorAll('.capsule').forEach((button) => {
       button.addEventListener('click', () => {
         if (button.disabled) return;
         button.disabled = true;
         button.textContent = '✓';
         collectLove('gacha');
-        document.querySelector('#gachaResult').textContent = gachaNotes[Number(button.dataset.capsule)];
+        const rarity = gachaRarities[Math.random() > .82 ? 2 : Math.random() > .48 ? 1 : 0];
+        document.querySelector('#gachaResult').textContent = `【${rarity}】${gachaNotes[Number(button.dataset.capsule)]}`;
       });
     });
 
@@ -1513,7 +1571,7 @@
         collectLove('star');
         recordSecretRoute('star');
         const message = starNotes[Number(button.dataset.star)];
-        document.querySelector('#starReply').textContent = litStars === starNotes.length ? message + ' 我许的愿，是你以后都被认真偏爱。' : message;
+        document.querySelector('#starReply').textContent = litStars === starNotes.length ? message + ` 我许的愿，是你以后都被认真偏爱。${dailyGame === 'star' ? ' 今日限定星河加赠：小悦宝，晚安时也要记得有人在想你。' : ''}` : message;
       });
     });
 
@@ -1541,6 +1599,7 @@
         document.querySelectorAll('.privilege').forEach((item) => item.classList.remove('selected'));
         button.classList.add('selected');
         collectLove('privilege');
+        loveJournal.privilege = button.querySelector('b').textContent;
         document.querySelector('#privilegeReply').textContent = privilegeNotes[Number(button.dataset.privilege)];
       });
     });
@@ -1559,10 +1618,22 @@
       '抽到了：一晚专属电影时间。片子由小悦宝决定，零食和拥抱由我准备。'
     ];
     let dateIndex = 0;
+    let selectedDatePlan = '';
     document.querySelector('#dateButton').addEventListener('click', () => {
       collectLove('date');
-      document.querySelector('#dateResult').textContent = datePlans[dateIndex % datePlans.length];
+      const plans = dailyGame === 'date' ? [datePlans[0], ...datePlans.slice(1)] : datePlans;
+      selectedDatePlan = plans[dateIndex % plans.length];
+      document.querySelector('#dateResult').textContent = selectedDatePlan;
+      const dateConfirm = document.querySelector('#dateConfirm');
+      dateConfirm.hidden = false;
+      dateConfirm.textContent = '把这份约会收进期待清单';
       dateIndex += 1;
+    });
+    document.querySelector('#dateConfirm').addEventListener('click', () => {
+      if (!selectedDatePlan) return;
+      loveJournal.date = selectedDatePlan.replace('抽到了：', '').split('。')[0];
+      document.querySelector('#dateConfirm').textContent = '已收进小周宝的期待清单';
+      document.querySelector('#dateResult').textContent = `${selectedDatePlan} 已经被小悦宝确认，下一次见面就从这里开始期待。`;
     });
 
     const wishReplies = {
@@ -1579,7 +1650,8 @@
         const wishCode = `WISH-${dayKey.replaceAll('-', '')}-${String([...document.querySelectorAll('.wish-choice')].indexOf(button) + 1).padStart(2, '0')}`;
         document.querySelector('#wishTitle').textContent = `心愿回执：${wish}`;
         document.querySelector('#wishText').textContent = wishReplies[wish];
-        document.querySelector('.wish-save').textContent = `回执编号：${wishCode}，截图发给小周宝签收。`;
+        document.querySelector('.wish-save').textContent = `回执编号：${wishCode}，截图发给小周宝签收。${dailyGame === 'wish' ? ' 今日限定：这张心愿卡进入优先兑现队列。' : ''}`;
+        loveJournal.wish = wish;
         collectLove('wish');
       });
     });
@@ -1620,6 +1692,7 @@
       }
 
       function draw(time) {
+        const loveProgress = Number(window.loveSkyProgress || 0);
         context.fillStyle = '#211720';
         context.fillRect(0, 0, width, height);
         const riverY = height * .5 + Math.sin(time * .00022) * height * .07;
@@ -1633,7 +1706,7 @@
           context.fill();
         }
         stars.forEach((star) => {
-          const glow = .35 + .55 * Math.sin(time * .0012 + star.phase);
+          const glow = Math.min(1, .35 + .55 * Math.sin(time * .0012 + star.phase) + loveProgress * .025);
           context.globalAlpha = glow;
           context.fillStyle = star.warm ? '#f3c47b' : '#fff7f2';
           context.beginPath();
@@ -1642,7 +1715,8 @@
         });
         if (time > nextMeteorAt) {
           meteors.push({ x: width + 35, y: height * (.08 + Math.random() * .48), vx: -(5 + Math.random() * 2), vy: 2.2 + Math.random() * 1.2, life: 1 });
-          nextMeteorAt = time + 3300 + Math.random() * 4200;
+          if (loveProgress >= 10) meteors.push({ x: width + 60, y: height * (.18 + Math.random() * .33), vx: -(4.6 + Math.random() * 1.6), vy: 1.9 + Math.random(), life: .86 });
+          nextMeteorAt = time + Math.max(1800, 5200 - loveProgress * 240) + Math.random() * 2500;
         }
         meteors = meteors.filter((meteor) => meteor.life > 0 && meteor.x > -120 && meteor.y < height + 100);
         meteors.forEach((meteor) => {
